@@ -1,0 +1,51 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Testes Documentação",
+    "description" : "Testes Documentação",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "/api/v1",
+    "description" : "Base API URL"
+  } ],
+  "paths" : {
+    "/users" : {
+      "post" : {
+        "tags" : [ "Usuários" ],
+        "summary" : "Minha rota para Cria usuário",
+        "description" : "Minha rota para Cria usuário",
+        "parameters" : [ {
+          "name" : "language",
+          "in" : "header",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false
+          }
+        }, {
+          "name" : "expand",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false
+          }
+        } ],
+        "requestBody" : {
+          "description" : "Request body",
+          "content" : {
+            "application/JSON" : {
+              "schema" : {
+                "type" : "object",
+                "exampleSetFlag" : false
+              },
+              "exampleSetFlag" : false
+            }
+          },
+          "required" : true
+        }
+      }
+    }
+  }
+}
