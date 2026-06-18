@@ -1,0 +1,248 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API de Gestão Comercial",
+    "version": "1.0.0",
+    "title": "Gestão Comercial"
+  },
+  "host": "localhost:8080",
+  "basePath": "/api",
+  "schemes": [
+    "http"
+  ],
+  "tags": [
+    {
+      "name": "usuarios",
+      "description": "Operações de usuários"
+    },
+    {
+      "name": "clientes",
+      "description": "Operações de clientes"
+    },
+    {
+      "name": "produtos",
+      "description": "Operações de produtos"
+    },
+    {
+      "name": "vendas",
+      "description": "Operações de vendas"
+    }
+  ],
+  "paths": {
+    "/usuarios": {
+      "get": {
+        "tags": ["usuarios"],
+        "summary": "Lista usuários",
+        "parameters": [
+          {
+            "name": "pagina",
+            "in": "query",
+            "type": "integer"
+          },
+          {
+            "name": "limite",
+            "in": "query",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Usuario"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["usuarios"],
+        "summary": "Cria usuário",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Criado"
+          }
+        }
+      }
+    },
+    "/usuarios/{id}": {
+      "get": {
+        "tags": ["usuarios"],
+        "summary": "Busca usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["usuarios"],
+        "summary": "Atualiza usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Atualizado"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["usuarios"],
+        "summary": "Atualização parcial",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UsuarioPatch"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Atualizado"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["usuarios"],
+        "summary": "Remove usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Removido"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Usuario": {
+      "type": "object",
+      "required": [
+        "nome",
+        "email"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "senha": {
+          "type": "string"
+        }
+      }
+    },
+    "UsuarioPatch": {
+      "type": "object",
+      "properties": {
+        "nome": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "Cliente": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "cpf": {
+          "type": "string"
+        }
+      }
+    },
+    "Produto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "preco": {
+          "type": "number"
+        },
+        "estoque": {
+          "type": "integer"
+        }
+      }
+    },
+    "Venda": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "clienteId": {
+          "type": "integer"
+        },
+        "valorTotal": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
