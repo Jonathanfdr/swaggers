@@ -1,0 +1,389 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API de Gestão Comercial estilo Petstore",
+    "version": "1.0.0",
+    "title": "Gestão Comercial API"
+  },
+  "host": "localhost:8080",
+  "basePath": "/v1",
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+
+  "tags": [
+    { "name": "usuarios" },
+    { "name": "clientes" },
+    { "name": "produtos" },
+    { "name": "vendas" }
+  ],
+
+  "paths": {
+
+    "/usuarios": {
+      "get": {
+        "tags": ["usuarios"],
+        "summary": "Listar usuários",
+        "parameters": [
+          { "name": "page", "in": "query", "type": "integer" },
+          { "name": "limit", "in": "query", "type": "integer" },
+          { "name": "x-source", "in": "header", "type": "string" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/Usuario" }
+            }
+          }
+        }
+      },
+
+      "post": {
+        "tags": ["usuarios"],
+        "summary": "Criar usuário",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/Usuario" }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Criado" }
+        }
+      }
+    },
+
+    "/usuarios/{id}": {
+      "get": {
+        "tags": ["usuarios"],
+        "summary": "Buscar usuário",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/Usuario" }
+          }
+        }
+      },
+
+      "put": {
+        "tags": ["usuarios"],
+        "summary": "Atualizar usuário",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": { "$ref": "#/definitions/Usuario" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Atualizado" }
+        }
+      },
+
+      "patch": {
+        "tags": ["usuarios"],
+        "summary": "Atualização parcial",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": { "type": "string" },
+                "email": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" }
+        }
+      },
+
+      "delete": {
+        "tags": ["usuarios"],
+        "summary": "Deletar usuário",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" }
+        ],
+        "responses": {
+          "204": { "description": "Deletado" }
+        }
+      }
+    },
+
+    "/clientes": {
+      "get": {
+        "tags": ["clientes"],
+        "summary": "Listar clientes",
+        "parameters": [
+          { "name": "cidade", "in": "query", "type": "string" },
+          { "name": "ativo", "in": "query", "type": "boolean" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/Cliente" }
+            }
+          }
+        }
+      },
+
+      "post": {
+        "tags": ["clientes"],
+        "summary": "Criar cliente",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/Cliente" }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Criado" }
+        }
+      }
+    },
+
+    "/clientes/{id}": {
+      "get": {
+        "tags": ["clientes"],
+        "summary": "Buscar cliente",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/Cliente" }
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["clientes"],
+        "summary": "Deletar cliente",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" }
+        ],
+        "responses": {
+          "204": { "description": "Deletado" }
+        }
+      }
+    },
+
+    "/produtos": {
+      "get": {
+        "tags": ["produtos"],
+        "summary": "Listar produtos",
+        "parameters": [
+          { "name": "categoria", "in": "query", "type": "string" },
+          { "name": "precoMin", "in": "query", "type": "number" },
+          { "name": "precoMax", "in": "query", "type": "number" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/Produto" }
+            }
+          }
+        }
+      },
+
+      "post": {
+        "tags": ["produtos"],
+        "summary": "Criar produto",
+        "parameters": [
+          {
+            "name": "x-loja-id",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/Produto" }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Criado" }
+        }
+      }
+    },
+
+    "/produtos/{id}": {
+      "put": {
+        "tags": ["produtos"],
+        "summary": "Atualizar produto",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": { "$ref": "#/definitions/Produto" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" }
+        }
+      },
+
+      "patch": {
+        "tags": ["produtos"],
+        "summary": "Atualizar estoque",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "estoque": { "type": "integer" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" }
+        }
+      },
+
+      "delete": {
+        "tags": ["produtos"],
+        "summary": "Deletar produto",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" }
+        ],
+        "responses": {
+          "204": { "description": "Deletado" }
+        }
+      }
+    },
+
+    "/vendas": {
+      "get": {
+        "tags": ["vendas"],
+        "summary": "Listar vendas",
+        "parameters": [
+          { "name": "dataInicio", "in": "query", "type": "string" },
+          { "name": "dataFim", "in": "query", "type": "string" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/Venda" }
+            }
+          }
+        }
+      },
+
+      "post": {
+        "tags": ["vendas"],
+        "summary": "Criar venda",
+        "parameters": [
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/Venda" }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Criado" }
+        }
+      }
+    },
+
+    "/vendas/{id}": {
+      "get": {
+        "tags": ["vendas"],
+        "summary": "Buscar venda",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/Venda" }
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["vendas"],
+        "summary": "Cancelar venda",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" }
+        ],
+        "responses": {
+          "204": { "description": "Cancelado" }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "Usuario": {
+      "type": "object",
+      "required": ["nome", "email"],
+      "properties": {
+        "id": { "type": "integer" },
+        "nome": { "type": "string" },
+        "email": { "type": "string" }
+      }
+    },
+
+    "Cliente": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "nome": { "type": "string" },
+        "cpf": { "type": "string" },
+        "cidade": { "type": "string" }
+      }
+    },
+
+    "Produto": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "nome": { "type": "string" },
+        "preco": { "type": "number" },
+        "estoque": { "type": "integer" }
+      }
+    },
+
+    "Venda": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "clienteId": { "type": "integer" },
+        "valorTotal": { "type": "number" }
+      }
+    }
+  }
+}
