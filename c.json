@@ -1,0 +1,264 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample server for a commercial system",
+    "version": "1.0.0",
+    "title": "Swagger Commercial API"
+  },
+  "host": "api.comercial.io",
+  "basePath": "/v1",
+  "schemes": ["http"],
+  "tags": [
+    {
+      "name": "user",
+      "description": "Everything about Users"
+    },
+    {
+      "name": "customer",
+      "description": "Everything about Customers"
+    },
+    {
+      "name": "product",
+      "description": "Everything about Products"
+    },
+    {
+      "name": "sale",
+      "description": "Everything about Sales"
+    }
+  ],
+  "paths": {
+
+    "/user": {
+      "get": {
+        "tags": ["user"],
+        "summary": "List users",
+        "operationId": "listUsers",
+        "produces": ["application/json"],
+        "parameters": [
+          { "name": "page", "in": "query", "type": "integer" },
+          { "name": "limit", "in": "query", "type": "integer" }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/User" }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["user"],
+        "summary": "Create user",
+        "operationId": "createUser",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/User" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" }
+        }
+      }
+    },
+
+    "/user/{id}": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get user by id",
+        "operationId": "getUserById",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/User" }
+          }
+        }
+      },
+      "put": {
+        "tags": ["user"],
+        "summary": "Update user",
+        "operationId": "updateUser",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": { "$ref": "#/definitions/User" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" }
+        }
+      },
+      "delete": {
+        "tags": ["user"],
+        "summary": "Delete user",
+        "operationId": "deleteUser",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" }
+        }
+      }
+    },
+
+    "/customer": {
+      "get": {
+        "tags": ["customer"],
+        "summary": "List customers",
+        "operationId": "listCustomers",
+        "parameters": [
+          { "name": "city", "in": "query", "type": "string" }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/Customer" }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["customer"],
+        "summary": "Create customer",
+        "operationId": "createCustomer",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/Customer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" }
+        }
+      }
+    },
+
+    "/product": {
+      "get": {
+        "tags": ["product"],
+        "summary": "List products",
+        "operationId": "listProducts",
+        "parameters": [
+          { "name": "category", "in": "query", "type": "string" }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/Product" }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["product"],
+        "summary": "Create product",
+        "operationId": "createProduct",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/Product" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" }
+        }
+      }
+    },
+
+    "/sale": {
+      "get": {
+        "tags": ["sale"],
+        "summary": "List sales",
+        "operationId": "listSales",
+        "parameters": [
+          { "name": "from", "in": "query", "type": "string" },
+          { "name": "to", "in": "query", "type": "string" }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/Sale" }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["sale"],
+        "summary": "Create sale",
+        "operationId": "createSale",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/Sale" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "successful operation" }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string" },
+        "email": { "type": "string" }
+      }
+    },
+
+    "Customer": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string" },
+        "cpf": { "type": "string" },
+        "city": { "type": "string" }
+      }
+    },
+
+    "Product": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "stock": { "type": "integer" }
+      }
+    },
+
+    "Sale": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "customerId": { "type": "integer" },
+        "total": { "type": "number" }
+      }
+    }
+  }
+}
