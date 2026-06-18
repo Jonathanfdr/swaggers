@@ -1,0 +1,293 @@
+openapi: 3.0.3
+
+info:
+  title: API Gestão Comercial
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api
+
+tags:
+  - name: Usuários
+  - name: Clientes
+  - name: Produtos
+  - name: Vendas
+
+paths:
+
+  /usuarios:
+    get:
+      tags:
+        - Usuários
+      summary: Listar usuários
+      parameters:
+        - name: pagina
+          in: query
+          schema:
+            type: integer
+        - name: limite
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Sucesso
+
+    post:
+      tags:
+        - Usuários
+      summary: Criar usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioRequest'
+      responses:
+        '201':
+          description: Usuário criado
+
+  /usuarios/{id}:
+    get:
+      tags:
+        - Usuários
+      summary: Buscar usuário
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Usuário encontrado
+
+    put:
+      tags:
+        - Usuários
+      summary: Atualizar usuário
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioRequest'
+      responses:
+        '200':
+          description: Usuário atualizado
+
+    patch:
+      tags:
+        - Usuários
+      summary: Atualização parcial
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioPatch'
+      responses:
+        '200':
+          description: Usuário atualizado
+
+    delete:
+      tags:
+        - Usuários
+      summary: Excluir usuário
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Usuário removido
+
+  /clientes:
+    get:
+      tags:
+        - Clientes
+      summary: Listar clientes
+      parameters:
+        - name: cidade
+          in: query
+          schema:
+            type: string
+        - name: ativo
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Lista de clientes
+
+    post:
+      tags:
+        - Clientes
+      summary: Criar cliente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteRequest'
+      responses:
+        '201':
+          description: Cliente criado
+
+  /produtos:
+    get:
+      tags:
+        - Produtos
+      summary: Listar produtos
+      parameters:
+        - name: categoria
+          in: query
+          schema:
+            type: string
+        - name: precoMin
+          in: query
+          schema:
+            type: number
+        - name: precoMax
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Lista de produtos
+
+    post:
+      tags:
+        - Produtos
+      summary: Criar produto
+      parameters:
+        - name: x-loja-id
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProdutoRequest'
+      responses:
+        '201':
+          description: Produto criado
+
+  /vendas:
+    get:
+      tags:
+        - Vendas
+      summary: Listar vendas
+      parameters:
+        - name: dataInicio
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: dataFim
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Lista de vendas
+
+    post:
+      tags:
+        - Vendas
+      summary: Registrar venda
+      parameters:
+        - name: x-request-id
+          in: header
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VendaRequest'
+      responses:
+        '201':
+          description: Venda criada
+
+components:
+
+  schemas:
+
+    UsuarioRequest:
+      type: object
+      required:
+        - nome
+        - email
+      properties:
+        nome:
+          type: string
+        email:
+          type: string
+        senha:
+          type: string
+
+    UsuarioPatch:
+      type: object
+      properties:
+        nome:
+          type: string
+        email:
+          type: string
+
+    ClienteRequest:
+      type: object
+      properties:
+        nome:
+          type: string
+        cpf:
+          type: string
+        telefone:
+          type: string
+        cidade:
+          type: string
+
+    ProdutoRequest:
+      type: object
+      properties:
+        nome:
+          type: string
+        descricao:
+          type: string
+        preco:
+          type: number
+        estoque:
+          type: integer
+
+    ItemVenda:
+      type: object
+      properties:
+        produtoId:
+          type: integer
+        quantidade:
+          type: integer
+
+    VendaRequest:
+      type: object
+      properties:
+        clienteId:
+          type: integer
+        produtos:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemVenda'
+        valorTotal:
+          type: number
