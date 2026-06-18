@@ -1,0 +1,368 @@
+openapi: 3.1.0
+
+info:
+  title: API de Gestão Comercial
+  version: 1.0.0
+  description: Exemplo OpenAPI 3.1
+
+servers:
+  - url: https://api.exemplo.com/v1
+
+tags:
+  - name: Usuários
+  - name: Clientes
+  - name: Produtos
+  - name: Vendas
+
+paths:
+
+  /usuarios:
+    get:
+      tags:
+        - Usuários
+      summary: Listar usuários
+
+      parameters:
+        - name: pagina
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+
+        - name: limite
+          in: query
+          schema:
+            type: integer
+            maximum: 100
+
+        - name: x-canal-origem
+          in: header
+          schema:
+            type: string
+            enum: [WEB, MOBILE, API]
+
+      responses:
+        '200':
+          description: Lista retornada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Usuario'
+
+    post:
+      tags:
+        - Usuários
+      summary: Criar usuário
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NovoUsuario'
+
+      responses:
+        '201':
+          description: Usuário criado
+
+  /usuarios/{id}:
+    get:
+      tags:
+        - Usuários
+      summary: Buscar usuário
+
+      parameters:
+        - $ref: '#/components/parameters/IdUsuario'
+
+      responses:
+        '200':
+          description: Usuário encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+
+    put:
+      tags:
+        - Usuários
+      summary: Substituir usuário
+
+      parameters:
+        - $ref: '#/components/parameters/IdUsuario'
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+
+      responses:
+        '200':
+          description: Usuário atualizado
+
+    patch:
+      tags:
+        - Usuários
+      summary: Atualização parcial
+
+      parameters:
+        - $ref: '#/components/parameters/IdUsuario'
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+
+                telefone:
+                  type:
+                    - string
+                    - "null"
+
+      responses:
+        '200':
+          description: Usuário alterado
+
+    delete:
+      tags:
+        - Usuários
+      summary: Excluir usuário
+
+      parameters:
+        - $ref: '#/components/parameters/IdUsuario'
+
+      responses:
+        '204':
+          description: Usuário removido
+
+  /clientes:
+    get:
+      tags:
+        - Clientes
+      summary: Listar clientes
+
+      parameters:
+        - name: cidade
+          in: query
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Lista de clientes
+
+    post:
+      tags:
+        - Clientes
+      summary: Criar cliente
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cliente'
+
+      responses:
+        '201':
+          description: Cliente criado
+
+  /produtos:
+    get:
+      tags:
+        - Produtos
+      summary: Listar produtos
+
+      parameters:
+        - name: categoria
+          in: query
+          schema:
+            type: string
+
+        - name: precoMin
+          in: query
+          schema:
+            type: number
+
+        - name: precoMax
+          in: query
+          schema:
+            type: number
+
+      responses:
+        '200':
+          description: Lista de produtos
+
+    post:
+      tags:
+        - Produtos
+      summary: Criar produto
+
+      parameters:
+        - name: x-loja-id
+          in: header
+          schema:
+            type: string
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Produto'
+
+      responses:
+        '201':
+          description: Produto criado
+
+  /vendas:
+    get:
+      tags:
+        - Vendas
+      summary: Consultar vendas
+
+      parameters:
+        - name: dataInicio
+          in: query
+          schema:
+            type: string
+            format: date
+
+        - name: dataFim
+          in: query
+          schema:
+            type: string
+            format: date
+
+      responses:
+        '200':
+          description: Lista de vendas
+
+    post:
+      tags:
+        - Vendas
+      summary: Registrar venda
+
+      parameters:
+        - name: x-request-id
+          in: header
+          schema:
+            type: string
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Venda'
+
+      responses:
+        '201':
+          description: Venda criada
+
+components:
+
+  parameters:
+
+    IdUsuario:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+
+    Usuario:
+      type: object
+
+      properties:
+        id:
+          type: integer
+
+        nome:
+          type: string
+
+        email:
+          type: string
+          format: email
+
+        telefone:
+          type:
+            - string
+            - "null"
+
+    NovoUsuario:
+      type: object
+
+      required:
+        - nome
+        - email
+
+      properties:
+        nome:
+          type: string
+
+        email:
+          type: string
+          format: email
+
+        telefone:
+          type:
+            - string
+            - "null"
+
+    Cliente:
+      type: object
+
+      properties:
+        id:
+          type: integer
+
+        nome:
+          type: string
+
+        cpf:
+          type: string
+
+    Produto:
+      type: object
+
+      properties:
+        id:
+          type: integer
+
+        nome:
+          type: string
+
+        preco:
+          type: number
+
+        estoque:
+          type: integer
+
+    Venda:
+      type: object
+
+      properties:
+        clienteId:
+          type: integer
+
+        produtos:
+          type: array
+
+          items:
+            type: object
+
+            properties:
+              produtoId:
+                type: integer
+
+              quantidade:
+                type: integer
+
+        valorTotal:
+          type: number
