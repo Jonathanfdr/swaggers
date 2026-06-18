@@ -1,0 +1,494 @@
+{
+"swagger": "2.0",
+"info": {
+"title": "API Gestao Comercial",
+"version": "1.0.0",
+"description": "API exemplo contendo usuarios, clientes, produtos e vendas."
+},
+"host": "localhost:8080",
+"basePath": "/api",
+"schemes": ["http"],
+"consumes": ["application/json"],
+"produces": ["application/json"],
+"tags": [
+{ "name": "usuarios" },
+{ "name": "clientes" },
+{ "name": "produtos" },
+{ "name": "vendas" }
+],
+"paths": {
+"/usuarios": {
+"get": {
+"tags": ["usuarios"],
+"summary": "Listar usuarios",
+"operationId": "listarUsuarios",
+"parameters": [
+{
+"name": "pagina",
+"in": "query",
+"type": "integer"
+},
+{
+"name": "limite",
+"in": "query",
+"type": "integer"
+}
+],
+"responses": {
+"200": {
+"description": "Sucesso",
+"schema": {
+"type": "array",
+"items": {
+"$ref": "#/definitions/Usuario"
+}
+}
+}
+}
+},
+"post": {
+"tags": ["usuarios"],
+"summary": "Criar usuario",
+"operationId": "criarUsuario",
+"parameters": [
+{
+"name": "body",
+"in": "body",
+"required": true,
+"schema": {
+"$ref": "#/definitions/UsuarioCreate"
+}
+}
+],
+"responses": {
+"201": {
+"description": "Usuario criado",
+"schema": {
+"$ref": "#/definitions/Usuario"
+}
+}
+}
+}
+},
+
+```
+"/usuarios/{id}": {
+  "get": {
+    "tags": ["usuarios"],
+    "summary": "Buscar usuario",
+    "operationId": "buscarUsuario",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "type": "integer"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Usuario encontrado",
+        "schema": {
+          "$ref": "#/definitions/Usuario"
+        }
+      }
+    }
+  },
+
+  "put": {
+    "tags": ["usuarios"],
+    "summary": "Atualizar usuario",
+    "operationId": "atualizarUsuario",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "type": "integer"
+      },
+      {
+        "name": "body",
+        "in": "body",
+        "required": true,
+        "schema": {
+          "$ref": "#/definitions/UsuarioUpdate"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Usuario atualizado",
+        "schema": {
+          "$ref": "#/definitions/Usuario"
+        }
+      }
+    }
+  },
+
+  "post": {
+    "tags": ["usuarios"],
+    "summary": "Atualizacao parcial",
+    "operationId": "atualizarParcialUsuario",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "type": "integer"
+      },
+      {
+        "name": "body",
+        "in": "body",
+        "schema": {
+          "$ref": "#/definitions/UsuarioPatch"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Usuario atualizado",
+        "schema": {
+          "$ref": "#/definitions/Usuario"
+        }
+      }
+    }
+  },
+
+  "delete": {
+    "tags": ["usuarios"],
+    "summary": "Excluir usuario",
+    "operationId": "excluirUsuario",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "type": "integer"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Usuario removido"
+      }
+    }
+  }
+},
+
+"/clientes": {
+  "get": {
+    "tags": ["clientes"],
+    "summary": "Listar clientes",
+    "operationId": "listarClientes",
+    "parameters": [
+      {
+        "name": "cidade",
+        "in": "query",
+        "type": "string"
+      },
+      {
+        "name": "ativo",
+        "in": "query",
+        "type": "boolean"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Lista de clientes",
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Cliente"
+          }
+        }
+      }
+    }
+  },
+
+  "post": {
+    "tags": ["clientes"],
+    "summary": "Criar cliente",
+    "operationId": "criarCliente",
+    "parameters": [
+      {
+        "name": "body",
+        "in": "body",
+        "required": true,
+        "schema": {
+          "$ref": "#/definitions/Cliente"
+        }
+      }
+    ],
+    "responses": {
+      "201": {
+        "description": "Cliente criado",
+        "schema": {
+          "$ref": "#/definitions/Cliente"
+        }
+      }
+    }
+  }
+},
+
+"/produtos": {
+  "get": {
+    "tags": ["produtos"],
+    "summary": "Listar produtos",
+    "operationId": "listarProdutos",
+    "parameters": [
+      {
+        "name": "categoria",
+        "in": "query",
+        "type": "string"
+      },
+      {
+        "name": "precoMin",
+        "in": "query",
+        "type": "number"
+      },
+      {
+        "name": "precoMax",
+        "in": "query",
+        "type": "number"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Lista de produtos",
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Produto"
+          }
+        }
+      }
+    }
+  },
+
+  "post": {
+    "tags": ["produtos"],
+    "summary": "Criar produto",
+    "operationId": "criarProduto",
+    "parameters": [
+      {
+        "name": "x-loja-id",
+        "in": "header",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "name": "body",
+        "in": "body",
+        "schema": {
+          "$ref": "#/definitions/Produto"
+        }
+      }
+    ],
+    "responses": {
+      "201": {
+        "description": "Produto criado",
+        "schema": {
+          "$ref": "#/definitions/Produto"
+        }
+      }
+    }
+  }
+},
+
+"/vendas": {
+  "get": {
+    "tags": ["vendas"],
+    "summary": "Listar vendas",
+    "operationId": "listarVendas",
+    "parameters": [
+      {
+        "name": "dataInicio",
+        "in": "query",
+        "type": "string"
+      },
+      {
+        "name": "dataFim",
+        "in": "query",
+        "type": "string"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Lista de vendas",
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Venda"
+          }
+        }
+      }
+    }
+  },
+
+  "post": {
+    "tags": ["vendas"],
+    "summary": "Registrar venda",
+    "operationId": "registrarVenda",
+    "parameters": [
+      {
+        "name": "x-request-id",
+        "in": "header",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "name": "body",
+        "in": "body",
+        "schema": {
+          "$ref": "#/definitions/Venda"
+        }
+      }
+    ],
+    "responses": {
+      "201": {
+        "description": "Venda criada",
+        "schema": {
+          "$ref": "#/definitions/Venda"
+        }
+      }
+    }
+  }
+}
+```
+
+},
+
+"definitions": {
+"Usuario": {
+"type": "object",
+"required": ["nome", "email"],
+"properties": {
+"id": {
+"type": "integer"
+},
+"nome": {
+"type": "string"
+},
+"email": {
+"type": "string"
+}
+}
+},
+
+```
+"UsuarioCreate": {
+  "type": "object",
+  "required": ["nome", "email", "senha"],
+  "properties": {
+    "nome": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "senha": {
+      "type": "string"
+    }
+  }
+},
+
+"UsuarioUpdate": {
+  "type": "object",
+  "required": ["nome", "email"],
+  "properties": {
+    "nome": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "senha": {
+      "type": "string"
+    }
+  }
+},
+
+"UsuarioPatch": {
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    }
+  }
+},
+
+"Cliente": {
+  "type": "object",
+  "required": ["nome"],
+  "properties": {
+    "nome": {
+      "type": "string"
+    },
+    "cpf": {
+      "type": "string"
+    },
+    "telefone": {
+      "type": "string"
+    },
+    "cidade": {
+      "type": "string"
+    }
+  }
+},
+
+"Produto": {
+  "type": "object",
+  "required": ["nome"],
+  "properties": {
+    "nome": {
+      "type": "string"
+    },
+    "descricao": {
+      "type": "string"
+    },
+    "preco": {
+      "type": "number"
+    },
+    "estoque": {
+      "type": "integer"
+    }
+  }
+},
+
+"ItemVenda": {
+  "type": "object",
+  "required": ["produtoId", "quantidade"],
+  "properties": {
+    "produtoId": {
+      "type": "integer"
+    },
+    "quantidade": {
+      "type": "integer"
+    }
+  }
+},
+
+"Venda": {
+  "type": "object",
+  "required": ["clienteId"],
+  "properties": {
+    "clienteId": {
+      "type": "integer"
+    },
+    "produtos": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ItemVenda"
+      }
+    },
+    "valorTotal": {
+      "type": "number"
+    }
+  }
+}
+```
+
+}
+}
