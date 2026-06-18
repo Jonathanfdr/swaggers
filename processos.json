@@ -1,12 +1,21 @@
-openapi: 3.0.3
+swagger: '2.0'
 
 info:
   title: API de Gestão Comercial
-  version: 1.0.0
+  version: '1.0.0'
   description: API exemplo com Usuários, Clientes, Produtos e Vendas.
 
-servers:
-  - url: https://api.exemplo.com/v1
+host: api.exemplo.com
+basePath: /v1
+
+schemes:
+  - https
+
+consumes:
+  - application/json
+
+produces:
+  - application/json
 
 tags:
   - name: Usuários
@@ -16,10 +25,6 @@ tags:
 
 paths:
 
-  #################################################
-  # USUÁRIOS
-  #################################################
-
   /usuarios:
     get:
       tags:
@@ -28,30 +33,22 @@ paths:
       parameters:
         - name: pagina
           in: query
-          description: Número da página
-          schema:
-            type: integer
-            example: 1
+          type: integer
 
         - name: limite
           in: query
-          description: Quantidade de registros por página
-          schema:
-            type: integer
-            example: 10
+          type: integer
 
         - name: x-canal-origem
           in: header
-          description: Canal que realizou a requisição
-          schema:
-            type: string
-            enum:
-              - WEB
-              - MOBILE
-              - API
+          type: string
+          enum:
+            - WEB
+            - MOBILE
+            - API
 
       responses:
-        '200':
+        200:
           description: Lista de usuários
 
     post:
@@ -62,108 +59,95 @@ paths:
       parameters:
         - name: x-correlation-id
           in: header
-          description: Identificador da requisição
-          schema:
-            type: string
+          type: string
 
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UsuarioCreate'
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UsuarioCreate'
 
       responses:
-        '201':
+        201:
           description: Usuário criado
 
   /usuarios/{id}:
     get:
       tags:
         - Usuários
-      summary: Buscar usuário por ID
+      summary: Buscar usuário
 
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: integer
+          type: integer
 
       responses:
-        '200':
+        200:
           description: Usuário encontrado
 
     put:
       tags:
         - Usuários
-      summary: Atualizar usuário completamente
+      summary: Atualizar usuário
 
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: integer
+          type: integer
 
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UsuarioUpdate'
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UsuarioUpdate'
 
       responses:
-        '200':
+        200:
           description: Usuário atualizado
 
     patch:
       tags:
         - Usuários
-      summary: Atualizar parcialmente um usuário
+      summary: Atualizar parcialmente usuário
 
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: integer
+          type: integer
 
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                nome:
-                  type: string
-                email:
-                  type: string
-                  format: email
+        - name: body
+          in: body
+          schema:
+            type: object
+            properties:
+              nome:
+                type: string
+
+              email:
+                type: string
 
       responses:
-        '200':
-          description: Usuário atualizado parcialmente
+        200:
+          description: Usuário atualizado
 
     delete:
       tags:
         - Usuários
-      summary: Remover usuário
+      summary: Excluir usuário
 
       parameters:
         - name: id
           in: path
           required: true
-          schema:
-            type: integer
+          type: integer
 
       responses:
-        '204':
+        204:
           description: Usuário removido
-
-  #################################################
-  # CLIENTES
-  #################################################
 
   /clientes:
     get:
@@ -174,16 +158,14 @@ paths:
       parameters:
         - name: cidade
           in: query
-          schema:
-            type: string
+          type: string
 
         - name: ativo
           in: query
-          schema:
-            type: boolean
+          type: boolean
 
       responses:
-        '200':
+        200:
           description: Lista de clientes
 
     post:
@@ -191,32 +173,31 @@ paths:
         - Clientes
       summary: Criar cliente
 
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Cliente'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Cliente'
 
       responses:
-        '201':
+        201:
           description: Cliente criado
 
   /clientes/{clienteId}:
     get:
       tags:
         - Clientes
-      summary: Buscar cliente por ID
+      summary: Buscar cliente
 
       parameters:
         - name: clienteId
           in: path
           required: true
-          schema:
-            type: integer
+          type: integer
 
       responses:
-        '200':
+        200:
           description: Cliente encontrado
 
     put:
@@ -228,18 +209,16 @@ paths:
         - name: clienteId
           in: path
           required: true
-          schema:
-            type: integer
+          type: integer
 
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Cliente'
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Cliente'
 
       responses:
-        '200':
+        200:
           description: Cliente atualizado
 
     delete:
@@ -251,16 +230,11 @@ paths:
         - name: clienteId
           in: path
           required: true
-          schema:
-            type: integer
+          type: integer
 
       responses:
-        '204':
+        204:
           description: Cliente removido
-
-  #################################################
-  # PRODUTOS
-  #################################################
 
   /produtos:
     get:
@@ -271,23 +245,18 @@ paths:
       parameters:
         - name: categoria
           in: query
-          schema:
-            type: string
+          type: string
 
         - name: precoMin
           in: query
-          schema:
-            type: number
-            format: double
+          type: number
 
         - name: precoMax
           in: query
-          schema:
-            type: number
-            format: double
+          type: number
 
       responses:
-        '200':
+        200:
           description: Lista de produtos
 
     post:
@@ -298,19 +267,16 @@ paths:
       parameters:
         - name: x-loja-id
           in: header
-          description: Identificador da loja
-          schema:
-            type: string
+          type: string
 
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Produto'
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Produto'
 
       responses:
-        '201':
+        201:
           description: Produto criado
 
   /produtos/{produtoId}:
@@ -323,60 +289,54 @@ paths:
         - name: produtoId
           in: path
           required: true
-          schema:
-            type: integer
+          type: integer
 
       responses:
-        '200':
+        200:
           description: Produto encontrado
 
     put:
       tags:
         - Produtos
-      summary: Atualizar produto completamente
+      summary: Atualizar produto
 
       parameters:
         - name: produtoId
           in: path
           required: true
-          schema:
-            type: integer
+          type: integer
 
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Produto'
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Produto'
 
       responses:
-        '200':
+        200:
           description: Produto atualizado
 
     patch:
       tags:
         - Produtos
-      summary: Atualizar estoque do produto
+      summary: Atualizar estoque
 
       parameters:
         - name: produtoId
           in: path
           required: true
-          schema:
-            type: integer
+          type: integer
 
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                estoque:
-                  type: integer
-                  example: 150
+        - name: body
+          in: body
+          schema:
+            type: object
+            properties:
+              estoque:
+                type: integer
 
       responses:
-        '200':
+        200:
           description: Estoque atualizado
 
     delete:
@@ -388,16 +348,11 @@ paths:
         - name: produtoId
           in: path
           required: true
-          schema:
-            type: integer
+          type: integer
 
       responses:
-        '204':
+        204:
           description: Produto removido
-
-  #################################################
-  # VENDAS
-  #################################################
 
   /vendas:
     get:
@@ -408,27 +363,16 @@ paths:
       parameters:
         - name: dataInicio
           in: query
-          schema:
-            type: string
-            format: date
+          type: string
+          format: date
 
         - name: dataFim
           in: query
-          schema:
-            type: string
-            format: date
-
-        - name: status
-          in: query
-          schema:
-            type: string
-            enum:
-              - PENDENTE
-              - CONCLUIDA
-              - CANCELADA
+          type: string
+          format: date
 
       responses:
-        '200':
+        200:
           description: Lista de vendas
 
     post:
@@ -439,36 +383,32 @@ paths:
       parameters:
         - name: x-request-id
           in: header
-          description: Identificador único da requisição
-          schema:
-            type: string
+          type: string
 
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Venda'
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Venda'
 
       responses:
-        '201':
-          description: Venda registrada
+        201:
+          description: Venda criada
 
   /vendas/{vendaId}:
     get:
       tags:
         - Vendas
-      summary: Buscar venda por ID
+      summary: Buscar venda
 
       parameters:
         - name: vendaId
           in: path
           required: true
-          schema:
-            type: integer
+          type: integer
 
       responses:
-        '200':
+        200:
           description: Venda encontrada
 
     patch:
@@ -480,24 +420,18 @@ paths:
         - name: vendaId
           in: path
           required: true
-          schema:
-            type: integer
+          type: integer
 
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                status:
-                  type: string
-                  enum:
-                    - PENDENTE
-                    - CONCLUIDA
-                    - CANCELADA
+        - name: body
+          in: body
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
 
       responses:
-        '200':
+        200:
           description: Status atualizado
 
     delete:
@@ -509,123 +443,85 @@ paths:
         - name: vendaId
           in: path
           required: true
-          schema:
-            type: integer
+          type: integer
 
       responses:
-        '204':
+        204:
           description: Venda cancelada
 
-components:
-  schemas:
+definitions:
 
-    UsuarioCreate:
-      type: object
-      required:
-        - nome
-        - email
-        - senha
+  UsuarioCreate:
+    type: object
+    required:
+      - nome
+      - email
+      - senha
+    properties:
+      nome:
+        type: string
 
-      properties:
-        nome:
-          type: string
-          example: João Silva
+      email:
+        type: string
 
-        email:
-          type: string
-          format: email
-          example: joao@email.com
+      senha:
+        type: string
 
-        senha:
-          type: string
-          example: Senha@123
+  UsuarioUpdate:
+    type: object
+    properties:
+      nome:
+        type: string
 
-    UsuarioUpdate:
-      type: object
+      email:
+        type: string
 
-      properties:
-        nome:
-          type: string
+  Cliente:
+    type: object
+    properties:
+      nome:
+        type: string
 
-        email:
-          type: string
-          format: email
+      cpf:
+        type: string
 
-    Cliente:
-      type: object
+      telefone:
+        type: string
 
-      required:
-        - nome
-        - cpf
+      cidade:
+        type: string
 
-      properties:
-        nome:
-          type: string
-          example: Maria Souza
+  Produto:
+    type: object
+    properties:
+      nome:
+        type: string
 
-        cpf:
-          type: string
-          example: 12345678900
+      descricao:
+        type: string
 
-        telefone:
-          type: string
-          example: 41999999999
+      preco:
+        type: number
 
-        cidade:
-          type: string
-          example: Curitiba
+      estoque:
+        type: integer
 
-    Produto:
-      type: object
+  Venda:
+    type: object
+    properties:
+      clienteId:
+        type: integer
 
-      required:
-        - nome
-        - preco
+      produtos:
+        type: array
+        items:
+          type: object
+          properties:
+            produtoId:
+              type: integer
 
-      properties:
-        nome:
-          type: string
-          example: Notebook Dell
+            quantidade:
+              type: integer
 
-        descricao:
-          type: string
-          example: Notebook para uso corporativo
-
-        preco:
-          type: number
-          format: double
-          example: 4599.90
-
-        estoque:
-          type: integer
-          example: 25
-
-    Venda:
-      type: object
-
-      required:
-        - clienteId
-        - produtos
-
-      properties:
-        clienteId:
-          type: integer
-          example: 1
-
-        produtos:
-          type: array
-          items:
-            type: object
-            properties:
-              produtoId:
-                type: integer
-                example: 10
-
-              quantidade:
-                type: integer
-                example: 2
-
-        valorTotal:
-          type: number
-          format: double
-          example: 9199.80
+      valorTotal:
+        type: number
