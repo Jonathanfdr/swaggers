@@ -1,0 +1,635 @@
+{
+"swagger": "2.0",
+"info": {
+"description": "API de Gestao Comercial",
+"version": "1.0.0",
+"title": "Gestao Comercial API"
+},
+"host": "localhost:8080",
+"basePath": "/api",
+"schemes": [
+"http"
+],
+"consumes": [
+"application/json"
+],
+"produces": [
+"application/json"
+],
+"tags": [
+{
+"name": "usuario",
+"description": "Operacoes de usuarios"
+},
+{
+"name": "cliente",
+"description": "Operacoes de clientes"
+},
+{
+"name": "produto",
+"description": "Operacoes de produtos"
+},
+{
+"name": "venda",
+"description": "Operacoes de vendas"
+}
+],
+"paths": {
+"/usuarios": {
+"get": {
+"tags": [
+"usuario"
+],
+"summary": "Listar usuarios",
+"operationId": "listarUsuarios",
+"produces": [
+"application/json"
+],
+"parameters": [
+{
+"name": "pagina",
+"in": "query",
+"type": "integer",
+"format": "int32"
+},
+{
+"name": "limite",
+"in": "query",
+"type": "integer",
+"format": "int32"
+}
+],
+"responses": {
+"200": {
+"description": "successful operation",
+"schema": {
+"type": "array",
+"items": {
+"$ref": "#/definitions/Usuario"
+}
+}
+}
+}
+},
+"post": {
+"tags": [
+"usuario"
+],
+"summary": "Criar usuario",
+"operationId": "criarUsuario",
+"consumes": [
+"application/json"
+],
+"produces": [
+"application/json"
+],
+"parameters": [
+{
+"in": "body",
+"name": "body",
+"description": "Dados do usuario",
+"required": true,
+"schema": {
+"$ref": "#/definitions/UsuarioCreate"
+}
+}
+],
+"responses": {
+"201": {
+"description": "successful operation",
+"schema": {
+"$ref": "#/definitions/Usuario"
+}
+}
+}
+}
+},
+"/usuarios/{id}": {
+"get": {
+"tags": [
+"usuario"
+],
+"summary": "Buscar usuario",
+"operationId": "buscarUsuario",
+"produces": [
+"application/json"
+],
+"parameters": [
+{
+"name": "id",
+"in": "path",
+"required": true,
+"type": "integer",
+"format": "int64"
+}
+],
+"responses": {
+"200": {
+"description": "successful operation",
+"schema": {
+"$ref": "#/definitions/Usuario"
+}
+}
+}
+},
+"put": {
+"tags": [
+"usuario"
+],
+"summary": "Atualizar usuario",
+"operationId": "atualizarUsuario",
+"consumes": [
+"application/json"
+],
+"produces": [
+"application/json"
+],
+"parameters": [
+{
+"name": "id",
+"in": "path",
+"required": true,
+"type": "integer",
+"format": "int64"
+},
+{
+"in": "body",
+"name": "body",
+"required": true,
+"schema": {
+"$ref": "#/definitions/UsuarioUpdate"
+}
+}
+],
+"responses": {
+"200": {
+"description": "successful operation",
+"schema": {
+"$ref": "#/definitions/Usuario"
+}
+}
+}
+},
+"delete": {
+"tags": [
+"usuario"
+],
+"summary": "Excluir usuario",
+"operationId": "excluirUsuario",
+"produces": [
+"application/json"
+],
+"parameters": [
+{
+"name": "id",
+"in": "path",
+"required": true,
+"type": "integer",
+"format": "int64"
+}
+],
+"responses": {
+"200": {
+"description": "successful operation"
+}
+}
+}
+},
+"/clientes": {
+"get": {
+"tags": [
+"cliente"
+],
+"summary": "Listar clientes",
+"operationId": "listarClientes",
+"parameters": [
+{
+"name": "cidade",
+"in": "query",
+"type": "string"
+},
+{
+"name": "ativo",
+"in": "query",
+"type": "boolean"
+}
+],
+"responses": {
+"200": {
+"description": "successful operation",
+"schema": {
+"type": "array",
+"items": {
+"$ref": "#/definitions/Cliente"
+}
+}
+}
+}
+},
+"post": {
+"tags": [
+"cliente"
+],
+"summary": "Criar cliente",
+"operationId": "criarCliente",
+"parameters": [
+{
+"in": "body",
+"name": "body",
+"required": true,
+"schema": {
+"$ref": "#/definitions/Cliente"
+}
+}
+],
+"responses": {
+"201": {
+"description": "successful operation",
+"schema": {
+"$ref": "#/definitions/Cliente"
+}
+}
+}
+}
+},
+"/clientes/{clienteId}": {
+"get": {
+"tags": [
+"cliente"
+],
+"summary": "Buscar cliente",
+"operationId": "buscarCliente",
+"parameters": [
+{
+"name": "clienteId",
+"in": "path",
+"required": true,
+"type": "integer",
+"format": "int64"
+}
+],
+"responses": {
+"200": {
+"description": "successful operation",
+"schema": {
+"$ref": "#/definitions/Cliente"
+}
+}
+}
+},
+"delete": {
+"tags": [
+"cliente"
+],
+"summary": "Excluir cliente",
+"operationId": "excluirCliente",
+"parameters": [
+{
+"name": "clienteId",
+"in": "path",
+"required": true,
+"type": "integer",
+"format": "int64"
+}
+],
+"responses": {
+"200": {
+"description": "successful operation"
+}
+}
+}
+},
+"/produtos": {
+"get": {
+"tags": [
+"produto"
+],
+"summary": "Listar produtos",
+"operationId": "listarProdutos",
+"parameters": [
+{
+"name": "categoria",
+"in": "query",
+"type": "string"
+},
+{
+"name": "precoMin",
+"in": "query",
+"type": "number",
+"format": "double"
+},
+{
+"name": "precoMax",
+"in": "query",
+"type": "number",
+"format": "double"
+}
+],
+"responses": {
+"200": {
+"description": "successful operation",
+"schema": {
+"type": "array",
+"items": {
+"$ref": "#/definitions/Produto"
+}
+}
+}
+}
+},
+"post": {
+"tags": [
+"produto"
+],
+"summary": "Criar produto",
+"operationId": "criarProduto",
+"parameters": [
+{
+"name": "x-loja-id",
+"in": "header",
+"required": true,
+"type": "string"
+},
+{
+"in": "body",
+"name": "body",
+"required": true,
+"schema": {
+"$ref": "#/definitions/Produto"
+}
+}
+],
+"responses": {
+"201": {
+"description": "successful operation",
+"schema": {
+"$ref": "#/definitions/Produto"
+}
+}
+}
+}
+},
+"/produtos/{produtoId}": {
+"put": {
+"tags": [
+"produto"
+],
+"summary": "Atualizar produto",
+"operationId": "atualizarProduto",
+"parameters": [
+{
+"name": "produtoId",
+"in": "path",
+"required": true,
+"type": "integer",
+"format": "int64"
+},
+{
+"in": "body",
+"name": "body",
+"required": true,
+"schema": {
+"$ref": "#/definitions/Produto"
+}
+}
+],
+"responses": {
+"200": {
+"description": "successful operation",
+"schema": {
+"$ref": "#/definitions/Produto"
+}
+}
+}
+}
+},
+"/vendas": {
+"get": {
+"tags": [
+"venda"
+],
+"summary": "Listar vendas",
+"operationId": "listarVendas",
+"parameters": [
+{
+"name": "dataInicio",
+"in": "query",
+"type": "string"
+},
+{
+"name": "dataFim",
+"in": "query",
+"type": "string"
+}
+],
+"responses": {
+"200": {
+"description": "successful operation",
+"schema": {
+"type": "array",
+"items": {
+"$ref": "#/definitions/Venda"
+}
+}
+}
+}
+},
+"post": {
+"tags": [
+"venda"
+],
+"summary": "Registrar venda",
+"operationId": "registrarVenda",
+"parameters": [
+{
+"name": "x-request-id",
+"in": "header",
+"required": true,
+"type": "string"
+},
+{
+"in": "body",
+"name": "body",
+"required": true,
+"schema": {
+"$ref": "#/definitions/Venda"
+}
+}
+],
+"responses": {
+"201": {
+"description": "successful operation",
+"schema": {
+"$ref": "#/definitions/Venda"
+}
+}
+}
+}
+},
+"/vendas/{vendaId}": {
+"get": {
+"tags": [
+"venda"
+],
+"summary": "Buscar venda",
+"operationId": "buscarVenda",
+"parameters": [
+{
+"name": "vendaId",
+"in": "path",
+"required": true,
+"type": "integer",
+"format": "int64"
+}
+],
+"responses": {
+"200": {
+"description": "successful operation",
+"schema": {
+"$ref": "#/definitions/Venda"
+}
+}
+}
+},
+"delete": {
+"tags": [
+"venda"
+],
+"summary": "Cancelar venda",
+"operationId": "cancelarVenda",
+"parameters": [
+{
+"name": "vendaId",
+"in": "path",
+"required": true,
+"type": "integer",
+"format": "int64"
+}
+],
+"responses": {
+"200": {
+"description": "successful operation"
+}
+}
+}
+}
+},
+"definitions": {
+"Usuario": {
+"type": "object",
+"properties": {
+"id": {
+"type": "integer",
+"format": "int64"
+},
+"nome": {
+"type": "string"
+},
+"email": {
+"type": "string"
+}
+}
+},
+"UsuarioCreate": {
+"type": "object",
+"required": [
+"nome",
+"email",
+"senha"
+],
+"properties": {
+"nome": {
+"type": "string"
+},
+"email": {
+"type": "string"
+},
+"senha": {
+"type": "string"
+}
+}
+},
+"UsuarioUpdate": {
+"type": "object",
+"properties": {
+"nome": {
+"type": "string"
+},
+"email": {
+"type": "string"
+},
+"senha": {
+"type": "string"
+}
+}
+},
+"Cliente": {
+"type": "object",
+"properties": {
+"nome": {
+"type": "string"
+},
+"cpf": {
+"type": "string"
+},
+"telefone": {
+"type": "string"
+},
+"cidade": {
+"type": "string"
+}
+}
+},
+"Produto": {
+"type": "object",
+"properties": {
+"nome": {
+"type": "string"
+},
+"descricao": {
+"type": "string"
+},
+"preco": {
+"type": "number",
+"format": "double"
+},
+"estoque": {
+"type": "integer",
+"format": "int32"
+}
+}
+},
+"ItemVenda": {
+"type": "object",
+"properties": {
+"produtoId": {
+"type": "integer",
+"format": "int64"
+},
+"quantidade": {
+"type": "integer",
+"format": "int32"
+}
+}
+},
+"Venda": {
+"type": "object",
+"properties": {
+"clienteId": {
+"type": "integer",
+"format": "int64"
+},
+"produtos": {
+"type": "array",
+"items": {
+"$ref": "#/definitions/ItemVenda"
+}
+},
+"valorTotal": {
+"type": "number",
+"format": "double"
+}
+}
+}
+}
+}
