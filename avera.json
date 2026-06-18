@@ -1,0 +1,365 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API Gestão Comercial",
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "/api",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/usuarios": {
+      "get": {
+        "tags": ["Usuários"],
+        "summary": "Listar usuários",
+        "parameters": [
+          {
+            "name": "pagina",
+            "in": "query",
+            "type": "integer"
+          },
+          {
+            "name": "limite",
+            "in": "query",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Usuários"],
+        "summary": "Criar usuário",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": ["nome", "email"],
+              "properties": {
+                "nome": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "senha": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Usuário criado"
+          }
+        }
+      }
+    },
+    "/usuarios/{id}": {
+      "get": {
+        "tags": ["Usuários"],
+        "summary": "Buscar usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário encontrado"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Usuários"],
+        "summary": "Atualizar usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "senha": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Usuários"],
+        "summary": "Atualização parcial",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Usuários"],
+        "summary": "Excluir usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Usuário removido"
+          }
+        }
+      }
+    },
+    "/clientes": {
+      "get": {
+        "tags": ["Clientes"],
+        "summary": "Listar clientes",
+        "parameters": [
+          {
+            "name": "cidade",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ativo",
+            "in": "query",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de clientes"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Clientes"],
+        "summary": "Criar cliente",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string"
+                },
+                "cpf": {
+                  "type": "string"
+                },
+                "telefone": {
+                  "type": "string"
+                },
+                "cidade": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Cliente criado"
+          }
+        }
+      }
+    },
+    "/produtos": {
+      "get": {
+        "tags": ["Produtos"],
+        "summary": "Listar produtos",
+        "parameters": [
+          {
+            "name": "categoria",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "precoMin",
+            "in": "query",
+            "type": "number"
+          },
+          {
+            "name": "precoMax",
+            "in": "query",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de produtos"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Produtos"],
+        "summary": "Criar produto",
+        "parameters": [
+          {
+            "name": "x-loja-id",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string"
+                },
+                "descricao": {
+                  "type": "string"
+                },
+                "preco": {
+                  "type": "number"
+                },
+                "estoque": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Produto criado"
+          }
+        }
+      }
+    },
+    "/vendas": {
+      "get": {
+        "tags": ["Vendas"],
+        "summary": "Listar vendas",
+        "parameters": [
+          {
+            "name": "dataInicio",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "dataFim",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de vendas"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Vendas"],
+        "summary": "Registrar venda",
+        "parameters": [
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "clienteId": {
+                  "type": "integer"
+                },
+                "produtos": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "produtoId": {
+                        "type": "integer"
+                      },
+                      "quantidade": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                "valorTotal": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Venda criada"
+          }
+        }
+      }
+    }
+  }
+}
