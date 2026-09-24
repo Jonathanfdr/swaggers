@@ -1,0 +1,149 @@
+openapi: 3.0.0
+info:
+  title: Datalake Sentinela API
+  description: API de alta performance para ingestão de métricas e traces estruturados.
+  version: 1.0.0
+  email: eder.oliveira@totvs.com.br
+servers:
+  - url: http://10.171.0.59:3001
+    description: Servidor Ubuntu (Produção/HML)
+
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+
+  schemas:
+    MetricTrace:
+      type: object
+      required:
+        - idSystem
+        - systemEnv
+        - payload
+      properties:
+        idSystem:
+          type: string
+          maxLength: 100
+          example: "gravacaoPropostaMotor"
+        systemEnv:
+          type: string
+          maxLength: 8
+          example: "producao"
+        payload:
+          type: object
+          additionalProperties: true
+          example: { "proposta": "ABCDEF", "server": "appserver4.totvs.com.br", "tempoGravacao": 30 }
+
+paths:
+  /ingest:
+    post:
+      summary: Ingestão simples de métrica
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetricTrace'
+      responses:
+        '201':
+          description: Criado com sucesso.
+
+  /massIngest:
+    post:
+      summary: Ingestão em lote (Bulk)
+      description: Envie um array de objetos para processamento em massa.
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MetricTrace'
+      responses:
+        '201':
+          description: Lote processado com sucesso.
+
+  /data:
+    get:
+      summary: Consultar dados com paginação
+      security:
+        - basicAuth: []
+      parameters:
+        - name: systemId
+          in: query
+          description: ID do sistema (ex: api-checkout)
+          schema:
+            type: string
+        - name: env
+          in: query
+          description: Ambiente (ex: prd, dev) - Max 20 chars
+          schema:
+            type: string
+        - name: since
+          in: query
+          description: Data/Hora inicial para filtro (ISO 8601)
+          schema:
+            type: string
+            example: "2026-04-01T00:00:00Z"
+        - name: page
+          in: query
+          description: Número da página
+          schema:
+            type: integer
+            default: 1
+        - name: perPage
+          in: query
+          description: Quantidade de registros por página
+          schema:
+            type: integer
+            default: 1000
+      responses:
+        '200':
+          description: Lista de registros paginada.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MetricTrace'     
+                  
+  /health:
+    get:
+      summary: Health check da aplicação
+      description: Verifica se o serviço Go está respondendo.
+      responses:
+        '200':
+          description: Aplicação online.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "up"
+
+  /health/db:
+    get:
+      summary: Health check do banco de dados
+      description: Verifica a conexão ativa com o PostgreSQL (sentineladb).
+      responses:
+        '200':
+          description: Banco de dados saudável.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  database:
+                    type: string
+                    example: "connected"
