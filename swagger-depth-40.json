@@ -1,0 +1,513 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Depth 40 API",
+    "version": "1.0.0",
+    "description": "Swagger 2.0 specification with a schema nested to 40 levels."
+  },
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/depth": {
+      "get": {
+        "summary": "Returns a JSON object with 40 levels of depth",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Depth1"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Depth1": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 1
+        },
+        "child": {
+          "$ref": "#/definitions/Depth2"
+        }
+      }
+    },
+    "Depth2": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 2
+        },
+        "child": {
+          "$ref": "#/definitions/Depth3"
+        }
+      }
+    },
+    "Depth3": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 3
+        },
+        "child": {
+          "$ref": "#/definitions/Depth4"
+        }
+      }
+    },
+    "Depth4": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 4
+        },
+        "child": {
+          "$ref": "#/definitions/Depth5"
+        }
+      }
+    },
+    "Depth5": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 5
+        },
+        "child": {
+          "$ref": "#/definitions/Depth6"
+        }
+      }
+    },
+    "Depth6": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 6
+        },
+        "child": {
+          "$ref": "#/definitions/Depth7"
+        }
+      }
+    },
+    "Depth7": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 7
+        },
+        "child": {
+          "$ref": "#/definitions/Depth8"
+        }
+      }
+    },
+    "Depth8": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 8
+        },
+        "child": {
+          "$ref": "#/definitions/Depth9"
+        }
+      }
+    },
+    "Depth9": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 9
+        },
+        "child": {
+          "$ref": "#/definitions/Depth10"
+        }
+      }
+    },
+    "Depth10": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 10
+        },
+        "child": {
+          "$ref": "#/definitions/Depth11"
+        }
+      }
+    },
+    "Depth11": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 11
+        },
+        "child": {
+          "$ref": "#/definitions/Depth12"
+        }
+      }
+    },
+    "Depth12": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 12
+        },
+        "child": {
+          "$ref": "#/definitions/Depth13"
+        }
+      }
+    },
+    "Depth13": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 13
+        },
+        "child": {
+          "$ref": "#/definitions/Depth14"
+        }
+      }
+    },
+    "Depth14": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 14
+        },
+        "child": {
+          "$ref": "#/definitions/Depth15"
+        }
+      }
+    },
+    "Depth15": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 15
+        },
+        "child": {
+          "$ref": "#/definitions/Depth16"
+        }
+      }
+    },
+    "Depth16": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 16
+        },
+        "child": {
+          "$ref": "#/definitions/Depth17"
+        }
+      }
+    },
+    "Depth17": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 17
+        },
+        "child": {
+          "$ref": "#/definitions/Depth18"
+        }
+      }
+    },
+    "Depth18": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 18
+        },
+        "child": {
+          "$ref": "#/definitions/Depth19"
+        }
+      }
+    },
+    "Depth19": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 19
+        },
+        "child": {
+          "$ref": "#/definitions/Depth20"
+        }
+      }
+    },
+    "Depth20": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 20
+        },
+        "child": {
+          "$ref": "#/definitions/Depth21"
+        }
+      }
+    },
+    "Depth21": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 21
+        },
+        "child": {
+          "$ref": "#/definitions/Depth22"
+        }
+      }
+    },
+    "Depth22": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 22
+        },
+        "child": {
+          "$ref": "#/definitions/Depth23"
+        }
+      }
+    },
+    "Depth23": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 23
+        },
+        "child": {
+          "$ref": "#/definitions/Depth24"
+        }
+      }
+    },
+    "Depth24": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 24
+        },
+        "child": {
+          "$ref": "#/definitions/Depth25"
+        }
+      }
+    },
+    "Depth25": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 25
+        },
+        "child": {
+          "$ref": "#/definitions/Depth26"
+        }
+      }
+    },
+    "Depth26": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 26
+        },
+        "child": {
+          "$ref": "#/definitions/Depth27"
+        }
+      }
+    },
+    "Depth27": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 27
+        },
+        "child": {
+          "$ref": "#/definitions/Depth28"
+        }
+      }
+    },
+    "Depth28": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 28
+        },
+        "child": {
+          "$ref": "#/definitions/Depth29"
+        }
+      }
+    },
+    "Depth29": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 29
+        },
+        "child": {
+          "$ref": "#/definitions/Depth30"
+        }
+      }
+    },
+    "Depth30": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 30
+        },
+        "child": {
+          "$ref": "#/definitions/Depth31"
+        }
+      }
+    },
+    "Depth31": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 31
+        },
+        "child": {
+          "$ref": "#/definitions/Depth32"
+        }
+      }
+    },
+    "Depth32": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 32
+        },
+        "child": {
+          "$ref": "#/definitions/Depth33"
+        }
+      }
+    },
+    "Depth33": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 33
+        },
+        "child": {
+          "$ref": "#/definitions/Depth34"
+        }
+      }
+    },
+    "Depth34": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 34
+        },
+        "child": {
+          "$ref": "#/definitions/Depth35"
+        }
+      }
+    },
+    "Depth35": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 35
+        },
+        "child": {
+          "$ref": "#/definitions/Depth36"
+        }
+      }
+    },
+    "Depth36": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 36
+        },
+        "child": {
+          "$ref": "#/definitions/Depth37"
+        }
+      }
+    },
+    "Depth37": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 37
+        },
+        "child": {
+          "$ref": "#/definitions/Depth38"
+        }
+      }
+    },
+    "Depth38": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 38
+        },
+        "child": {
+          "$ref": "#/definitions/Depth39"
+        }
+      }
+    },
+    "Depth39": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 39
+        },
+        "child": {
+          "$ref": "#/definitions/Depth40"
+        }
+      }
+    },
+    "Depth40": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "example": 40
+        },
+        "value": {
+          "type": "string",
+          "example": "end"
+        }
+      }
+    }
+  }
+}
