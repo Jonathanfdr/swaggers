@@ -1,0 +1,511 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Depth 40 API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/depth": {
+      "get": {
+        "summary": "Returns a response with 40 levels of depth",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Depth1"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Depth1": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 1
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth2"
+          }
+        }
+      },
+      "Depth2": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 2
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth3"
+          }
+        }
+      },
+      "Depth3": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 3
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth4"
+          }
+        }
+      },
+      "Depth4": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 4
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth5"
+          }
+        }
+      },
+      "Depth5": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 5
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth6"
+          }
+        }
+      },
+      "Depth6": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 6
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth7"
+          }
+        }
+      },
+      "Depth7": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 7
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth8"
+          }
+        }
+      },
+      "Depth8": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 8
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth9"
+          }
+        }
+      },
+      "Depth9": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 9
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth10"
+          }
+        }
+      },
+      "Depth10": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 10
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth11"
+          }
+        }
+      },
+      "Depth11": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 11
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth12"
+          }
+        }
+      },
+      "Depth12": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 12
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth13"
+          }
+        }
+      },
+      "Depth13": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 13
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth14"
+          }
+        }
+      },
+      "Depth14": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 14
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth15"
+          }
+        }
+      },
+      "Depth15": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 15
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth16"
+          }
+        }
+      },
+      "Depth16": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 16
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth17"
+          }
+        }
+      },
+      "Depth17": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 17
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth18"
+          }
+        }
+      },
+      "Depth18": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 18
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth19"
+          }
+        }
+      },
+      "Depth19": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 19
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth20"
+          }
+        }
+      },
+      "Depth20": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 20
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth21"
+          }
+        }
+      },
+      "Depth21": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 21
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth22"
+          }
+        }
+      },
+      "Depth22": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 22
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth23"
+          }
+        }
+      },
+      "Depth23": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 23
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth24"
+          }
+        }
+      },
+      "Depth24": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 24
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth25"
+          }
+        }
+      },
+      "Depth25": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 25
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth26"
+          }
+        }
+      },
+      "Depth26": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 26
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth27"
+          }
+        }
+      },
+      "Depth27": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 27
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth28"
+          }
+        }
+      },
+      "Depth28": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 28
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth29"
+          }
+        }
+      },
+      "Depth29": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 29
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth30"
+          }
+        }
+      },
+      "Depth30": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 30
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth31"
+          }
+        }
+      },
+      "Depth31": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 31
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth32"
+          }
+        }
+      },
+      "Depth32": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 32
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth33"
+          }
+        }
+      },
+      "Depth33": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 33
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth34"
+          }
+        }
+      },
+      "Depth34": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 34
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth35"
+          }
+        }
+      },
+      "Depth35": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 35
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth36"
+          }
+        }
+      },
+      "Depth36": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 36
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth37"
+          }
+        }
+      },
+      "Depth37": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 37
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth38"
+          }
+        }
+      },
+      "Depth38": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 38
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth39"
+          }
+        }
+      },
+      "Depth39": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 39
+          },
+          "child": {
+            "$ref": "#/components/schemas/Depth40"
+          }
+        }
+      },
+      "Depth40": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "example": 40
+          },
+          "value": {
+            "type": "string",
+            "example": "end"
+          }
+        }
+      }
+    }
+  }
+}
