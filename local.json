@@ -1,0 +1,198 @@
+{
+"openapi": "3.0.3",
+"info": {
+"title": "Products API",
+"version": "1.0.0",
+"description": "API simples para gerenciamento de produtos."
+},
+"servers": [
+{
+"url": "/api/products"
+}
+],
+"paths": {
+"/": {
+"get": {
+"summary": "Listar produtos",
+"operationId": "listProducts",
+"responses": {
+"200": {
+"description": "Lista de produtos",
+"content": {
+"application/json": {
+"schema": {
+"type": "array",
+"items": {
+"$ref": "#/components/schemas/Product"
+}
+}
+}
+}
+}
+}
+},
+"post": {
+"summary": "Cadastrar produto",
+"operationId": "createProduct",
+"requestBody": {
+"required": true,
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ProductInput"
+}
+}
+}
+},
+"responses": {
+"201": {
+"description": "Produto cadastrado",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/Product"
+}
+}
+}
+}
+}
+}
+},
+"/{id}": {
+"parameters": [
+{
+"name": "id",
+"in": "path",
+"required": true,
+"schema": {
+"type": "integer"
+}
+}
+],
+"get": {
+"summary": "Consultar produto por ID",
+"operationId": "getProduct",
+"responses": {
+"200": {
+"description": "Produto encontrado",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/Product"
+}
+}
+}
+},
+"404": {
+"description": "Produto não encontrado"
+}
+}
+},
+"put": {
+"summary": "Atualizar produto",
+"operationId": "updateProduct",
+"requestBody": {
+"required": true,
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ProductInput"
+}
+}
+}
+},
+"responses": {
+"200": {
+"description": "Produto atualizado",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/Product"
+}
+}
+}
+},
+"404": {
+"description": "Produto não encontrado"
+}
+}
+},
+"delete": {
+"summary": "Excluir produto",
+"operationId": "deleteProduct",
+"responses": {
+"204": {
+"description": "Produto excluído"
+},
+"404": {
+"description": "Produto não encontrado"
+}
+}
+}
+},
+"/openapi.json": {
+"get": {
+"summary": "Obter especificação OpenAPI",
+"operationId": "getOpenApi",
+"responses": {
+"200": {
+"description": "Especificação OpenAPI",
+"content": {
+"application/json": {
+"schema": {
+"type": "object"
+}
+}
+}
+}
+}
+}
+}
+},
+"components": {
+"schemas": {
+"ProductInput": {
+"type": "object",
+"properties": {
+"name": {
+"type": "string",
+"example": "Notebook"
+},
+"price": {
+"type": "number",
+"example": 3500
+},
+"description": {
+"type": "string",
+"example": "Notebook 16 GB RAM"
+}
+},
+"required": [
+"name",
+"price"
+]
+},
+"Product": {
+"type": "object",
+"properties": {
+"id": {
+"type": "integer",
+"example": 1
+},
+"name": {
+"type": "string",
+"example": "Notebook"
+},
+"price": {
+"type": "number",
+"example": 3500
+},
+"description": {
+"type": "string",
+"example": "Notebook 16 GB RAM"
+}
+}
+}
+}
+}
+}
