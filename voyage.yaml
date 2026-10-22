@@ -1,0 +1,126 @@
+openapi: 3.0.3
+info:
+  title: Voyage SPA (frontend estático)
+  version: 1.0.0
+  description: |
+    O Voyage **não tem backend nem API de dados**: todo o estado (viagem, checklist,
+    orçamento) vive no navegador (localStorage) e os destinos estão embutidos no bundle JS.
+    Esta spec descreve apenas o que o container nginx serve via HTTP, para configurar o gateway.
+
+    Rotas de página (`/destinos`, `/viagem`, ...) são rotas do roteador Angular: o servidor
+    responde sempre com `index.html` (fallback de SPA). Qualquer caminho desconhecido
+    também recebe `index.html` com 200 (o app redireciona para `/`).
+
+    Imagens dos destinos vêm direto de `images.unsplash.com` (o navegador do usuário acessa
+    esse host; se o gateway/CSP restringir origens, libere-o em `img-src`).
+servers:
+  - url: http://localhost:4299
+    description: Container local (4299 -> 4200)
+tags:
+  - name: pages
+    description: Rotas do roteador Angular (todas retornam index.html)
+  - name: assets
+    description: Arquivos estáticos do build
+paths:
+  /:
+    get:
+      tags: [pages]
+      summary: Início
+      operationId: home
+      responses:
+        '200': { $ref: '#/components/responses/Html' }
+  /destinos:
+    get:
+      tags: [pages]
+      summary: Lista de destinos (filtros são estado do cliente, sem query params)
+      operationId: destinations
+      responses:
+        '200': { $ref: '#/components/responses/Html' }
+  /destinos/{id}:
+    get:
+      tags: [pages]
+      summary: Detalhe de um destino
+      description: IDs inexistentes ainda retornam 200; a tela mostra "Destino não encontrado".
+      operationId: destinationDetail
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [paris, kyoto, bali, cinque-terre, islandia, rio, veneza, suica, nova-york, santorini, machu-picchu, dubai]
+      responses:
+        '200': { $ref: '#/components/responses/Html' }
+  /viagem:
+    get:
+      tags: [pages]
+      summary: Roteiro e checklist da mala
+      operationId: trip
+      responses:
+        '200': { $ref: '#/components/responses/Html' }
+  /orcamento:
+    get:
+      tags: [pages]
+      summary: Calculadora de orçamento
+      operationId: budget
+      responses:
+        '200': { $ref: '#/components/responses/Html' }
+  /index.html:
+    get:
+      tags: [assets]
+      summary: Entrada da aplicação
+      description: Não deve ser cacheado agressivamente (referencia os bundles com hash).
+      operationId: indexHtml
+      responses:
+        '200': { $ref: '#/components/responses/Html' }
+  /favicon.ico:
+    get:
+      tags: [assets]
+      summary: Favicon
+      operationId: favicon
+      responses:
+        '200':
+          description: Ícone
+          content:
+            image/x-icon:
+              schema: { type: string, format: binary }
+  /{file}.js:
+    get:
+      tags: [assets]
+      summary: Bundles JavaScript (nome com hash, ex. main-XYYVTMJG.js)
+      description: Imutável; cache de 1 ano (`immutable`). O hash muda a cada build.
+      operationId: scripts
+      parameters: [{ $ref: '#/components/parameters/File' }]
+      responses:
+        '200': { $ref: '#/components/responses/Immutable' }
+        '404': { description: Arquivo inexistente (ex. hash de build antigo) }
+  /{file}.css:
+    get:
+      tags: [assets]
+      summary: Folhas de estilo (nome com hash, ex. styles-JEIMEPLZ.css)
+      operationId: styles
+      parameters: [{ $ref: '#/components/parameters/File' }]
+      responses:
+        '200': { $ref: '#/components/responses/Immutable' }
+        '404': { description: Arquivo inexistente }
+components:
+  parameters:
+    File:
+      name: file
+      in: path
+      required: true
+      schema: { type: string, example: main-XYYVTMJG }
+  responses:
+    Html:
+      description: index.html da SPA
+      content:
+        text/html:
+          schema: { type: string }
+    Immutable:
+      description: Asset estático
+      headers:
+        Cache-Control:
+          schema: { type: string, example: 'public, immutable' }
+      content:
+        '*/*':
+          schema: { type: string, format: binary }
