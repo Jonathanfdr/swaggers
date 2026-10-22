@@ -11,9 +11,15 @@ info:
     responde sempre com `index.html` (fallback de SPA). Qualquer caminho desconhecido
     também recebe `index.html` com 200 (o app redireciona para `/`).
 
+    O app é buildado com `<base href="/voyage/">`: todos os assets são pedidos sob `/voyage/`.
+    O nginx aceita as requisições com ou sem o prefixo `/voyage`, então o gateway pode
+    repassar o caminho inteiro ou removê-lo.
+
     Imagens dos destinos vêm direto de `images.unsplash.com` (o navegador do usuário acessa
     esse host; se o gateway/CSP restringir origens, libere-o em `img-src`).
 servers:
+  - url: https://urldogateway
+    description: Gateway (o prefixo /voyage já está nos paths abaixo)
   - url: http://localhost:4299
     description: Container local (4299 -> 4200)
 tags:
@@ -22,21 +28,21 @@ tags:
   - name: assets
     description: Arquivos estáticos do build
 paths:
-  /:
+  /voyage/:
     get:
       tags: [pages]
       summary: Início
       operationId: home
       responses:
         '200': { $ref: '#/components/responses/Html' }
-  /destinos:
+  /voyage/destinos:
     get:
       tags: [pages]
       summary: Lista de destinos (filtros são estado do cliente, sem query params)
       operationId: destinations
       responses:
         '200': { $ref: '#/components/responses/Html' }
-  /destinos/{id}:
+  /voyage/destinos/{id}:
     get:
       tags: [pages]
       summary: Detalhe de um destino
@@ -51,21 +57,21 @@ paths:
             enum: [paris, kyoto, bali, cinque-terre, islandia, rio, veneza, suica, nova-york, santorini, machu-picchu, dubai]
       responses:
         '200': { $ref: '#/components/responses/Html' }
-  /viagem:
+  /voyage/viagem:
     get:
       tags: [pages]
       summary: Roteiro e checklist da mala
       operationId: trip
       responses:
         '200': { $ref: '#/components/responses/Html' }
-  /orcamento:
+  /voyage/orcamento:
     get:
       tags: [pages]
       summary: Calculadora de orçamento
       operationId: budget
       responses:
         '200': { $ref: '#/components/responses/Html' }
-  /index.html:
+  /voyage/index.html:
     get:
       tags: [assets]
       summary: Entrada da aplicação
@@ -73,7 +79,7 @@ paths:
       operationId: indexHtml
       responses:
         '200': { $ref: '#/components/responses/Html' }
-  /favicon.ico:
+  /voyage/favicon.ico:
     get:
       tags: [assets]
       summary: Favicon
@@ -84,7 +90,7 @@ paths:
           content:
             image/x-icon:
               schema: { type: string, format: binary }
-  /{file}.js:
+  /voyage/{file}.js:
     get:
       tags: [assets]
       summary: Bundles JavaScript (nome com hash, ex. main-XYYVTMJG.js)
@@ -94,7 +100,7 @@ paths:
       responses:
         '200': { $ref: '#/components/responses/Immutable' }
         '404': { description: Arquivo inexistente (ex. hash de build antigo) }
-  /{file}.css:
+  /voyage/{file}.css:
     get:
       tags: [assets]
       summary: Folhas de estilo (nome com hash, ex. styles-JEIMEPLZ.css)
