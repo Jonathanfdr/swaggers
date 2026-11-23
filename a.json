@@ -1,248 +1,1551 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "description": "API de Gestão Comercial",
-    "version": "1.0.0",
-    "title": "Gestão Comercial"
-  },
-  "host": "localhost:8080",
-  "basePath": "/api",
-  "schemes": [
-    "http"
-  ],
-  "tags": [
-    {
-      "name": "usuarios",
-      "description": "Operações de usuários"
-    },
-    {
-      "name": "clientes",
-      "description": "Operações de clientes"
-    },
-    {
-      "name": "produtos",
-      "description": "Operações de produtos"
-    },
-    {
-      "name": "vendas",
-      "description": "Operações de vendas"
-    }
-  ],
-  "paths": {
-    "/usuarios": {
-      "get": {
-        "tags": ["usuarios"],
-        "summary": "Lista usuários",
-        "parameters": [
-          {
-            "name": "pagina",
-            "in": "query",
-            "type": "integer"
-          },
-          {
-            "name": "limite",
-            "in": "query",
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Sucesso",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Usuario"
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": ["usuarios"],
-        "summary": "Cria usuário",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Usuario"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Criado"
-          }
-        }
-      }
-    },
-    "/usuarios/{id}": {
-      "get": {
-        "tags": ["usuarios"],
-        "summary": "Busca usuário",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Sucesso",
-            "schema": {
-              "$ref": "#/definitions/Usuario"
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": ["usuarios"],
-        "summary": "Atualiza usuário",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/Usuario"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Atualizado"
-          }
-        }
-      },
-      "patch": {
-        "tags": ["usuarios"],
-        "summary": "Atualização parcial",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/UsuarioPatch"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Atualizado"
-          }
-        }
-      },
-      "delete": {
-        "tags": ["usuarios"],
-        "summary": "Remove usuário",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Removido"
-          }
-        }
-      }
-    }
-  },
-  "definitions": {
-    "Usuario": {
-      "type": "object",
-      "required": [
-        "nome",
-        "email"
-      ],
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "nome": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "senha": {
-          "type": "string"
-        }
-      }
-    },
-    "UsuarioPatch": {
-      "type": "object",
-      "properties": {
-        "nome": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        }
-      }
-    },
-    "Cliente": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "nome": {
-          "type": "string"
-        },
-        "cpf": {
-          "type": "string"
-        }
-      }
-    },
-    "Produto": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "nome": {
-          "type": "string"
-        },
-        "preco": {
-          "type": "number"
-        },
-        "estoque": {
-          "type": "integer"
-        }
-      }
-    },
-    "Venda": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "clienteId": {
-          "type": "integer"
-        },
-        "valorTotal": {
-          "type": "number"
-        }
-      }
-    }
-  }
+"openapi": "3.0.3",
+"info": {
+"title": "API pública de Itens do Pedido de Venda",
+"version": "1.0.0",
+"description": "API de Itens do Pedido de Venda do módulo TOTVS - PDP. Este serviço permite a consulta, inclusão, alteração, cancelamento e eliminação de itens do pedido de venda no ERP Datasul."
+},
+"servers": [
+{
+"url": "[servidor]/api/pdp/v1",
+"description": "Ambiente Datasul com o módulo PDP publicado."
+}
+],
+"tags": [
+{
+"name": "orderItemsPublic",
+"description": "Manutenção e consulta de Itens do Pedido de Venda."
+}
+],
+"security": [
+{
+"basicAuth": []
+}
+],
+"paths": {
+"/orderItemsPublic": {
+"get": {
+"tags": [
+"orderItemsPublic"
+],
+"summary": "Consulta paginada de itens do pedido de venda",
+"description": "Retorna os itens do pedido de venda cadastrados no ERP com suporte a paginação, pesquisa rápida por termos e projeção de campos.",
+"operationId": "getOrderItemsPublic",
+"x-abl-source": "orderItemsPublic.p",
+"x-abl-procedure": "pi-query-v1",
+"x-abl-route-pattern": "/~*",
+"parameters": [
+{
+"name": "page",
+"in": "query",
+"required": false,
+"description": "Número da página de resultados.",
+"schema": {
+"type": "integer",
+"default": 1
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"description": "Quantidade de registros por página.",
+"schema": {
+"type": "integer",
+"default": 20
+}
+},
+{
+"name": "totalCount",
+"in": "query",
+"required": false,
+"description": "Indica se o total de registros (totalHits) deve ser calculado.",
+"schema": {
+"type": "boolean",
+"default": false
+}
+},
+{
+"name": "lastUpdate",
+"in": "query",
+"required": false,
+"description": "Data/Hora da última sincronização para consulta incremental (filtra por registros alterados após este momento).",
+"schema": {
+"type": "string",
+"format": "date-time",
+"pattern": "ISO-8601"
+}
+},
+{
+"name": "fields",
+"in": "query",
+"required": false,
+"description": "Lista de campos específicos a serem retornados na resposta.",
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "order",
+"in": "query",
+"required": false,
+"description": "Ordenação dos resultados.",
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/OrderItemsPublicResponse"
+}
+}
+}
+},
+"400": {
+"description": "Erro na requisição",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ErrorList"
+}
+}
+}
+},
+"401": {
+"description": "Não autorizado",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ErrorList"
+}
+}
+}
+},
+"500": {
+"description": "Erro interno",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ErrorList"
+}
+}
+}
+}
+}
+},
+"post": {
+"tags": [
+"orderItemsPublic"
+],
+"summary": "Inclusão de Item do Pedido de Venda",
+"description": "Realiza a inclusão de um novo item em um pedido de venda existente no ERP Datasul.",
+"operationId": "postOrderItemsPublic",
+"x-abl-source": "orderItemsPublic.p",
+"x-abl-procedure": "pi-create-v1",
+"x-abl-route-pattern": "/~*",
+"requestBody": {
+"description": "Objeto contendo os dados do item do pedido a ser criado.",
+"required": true,
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/OrderItemsPublicPost"
+}
+}
+}
+},
+"responses": {
+"201": {
+"description": "Criado com sucesso",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/OrderItemsPublic"
+}
+}
+}
+},
+"400": {
+"description": "Erro na requisição ou falha nas validações de negócio",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ErrorList"
+}
+}
+}
+},
+"401": {
+"description": "Não autorizado",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ErrorList"
+}
+}
+}
+},
+"500": {
+"description": "Erro interno",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ErrorList"
+}
+}
+}
+}
+}
+}
+},
+"/orderItemsPublic/{orderID}": {
+"get": {
+"tags": [
+"orderItemsPublic"
+],
+"summary": "Consulta itens por número do pedido",
+"description": "Retorna a lista de itens associados a um determinado pedido de venda.",
+"operationId": "getOrderItemsPublicByOrderId",
+"x-abl-source": "orderItemsPublic.p",
+"x-abl-procedure": "pi-get-v1",
+"x-abl-route-pattern": "/~*/",
+"parameters": [
+{
+"name": "orderID",
+"in": "path",
+"required": true,
+"description": "Número do pedido de venda (nr-pedido).",
+"schema": {
+"type": "integer"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/OrderItemsListResponse"
+}
+}
+}
+},
+"404": {
+"description": "Nenhum item encontrado",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ErrorList"
+}
+}
+}
+}
+}
+}
+},
+"/orderItemsPublic/{orderID}/{sequence}": {
+"get": {
+"tags": [
+"orderItemsPublic"
+],
+"summary": "Consulta item do pedido por pedido e sequência",
+"description": "Retorna os detalhes de um item específico do pedido.",
+"operationId": "getOrderItemsPublicBySequence",
+"x-abl-source": "orderItemsPublic.p",
+"x-abl-procedure": "pi-get-by-sequence-v1",
+"x-abl-route-pattern": "/~*/~*/",
+"parameters": [
+{
+"name": "orderID",
+"in": "path",
+"required": true,
+"description": "Número do pedido de venda (nr-pedido).",
+"schema": {
+"type": "integer"
+}
+},
+{
+"name": "sequence",
+"in": "path",
+"required": true,
+"description": "Número da sequência do item.",
+"schema": {
+"type": "integer"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/OrderItemsPublic"
+}
+}
+}
+},
+"404": {
+"description": "Item não localizado",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ErrorList"
+}
+}
+}
+}
+}
+},
+"put": {
+"tags": [
+"orderItemsPublic"
+],
+"summary": "Atualização de Item do Pedido",
+"description": "Atualiza um item de pedido de venda existente.",
+"operationId": "putOrderItemsPublic",
+"x-abl-source": "orderItemsPublic.p",
+"x-abl-procedure": "pi-update-v1",
+"x-abl-route-pattern": "/~*",
+"parameters": [
+{
+"name": "orderID",
+"in": "path",
+"required": true,
+"description": "Número do pedido de venda (nr-pedido).",
+"schema": {
+"type": "integer"
+}
+},
+{
+"name": "sequence",
+"in": "path",
+"required": true,
+"description": "Número da sequência do item.",
+"schema": {
+"type": "integer"
+}
+}
+],
+"requestBody": {
+"required": true,
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/OrderItemsPublicPost"
+}
+}
+}
+},
+"responses": {
+"200": {
+"description": "Atualizado com sucesso",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/OrderItemsPublic"
+}
+}
+}
+},
+"400": {
+"description": "Erro de validação",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ErrorList"
+}
+}
+}
+}
+}
+},
+"delete": {
+"tags": [
+"orderItemsPublic"
+],
+"summary": "Exclusão de Item do Pedido",
+"description": "Remove um item do pedido de venda.",
+"operationId": "deleteOrderItemsPublic",
+"x-abl-source": "orderItemsPublic.p",
+"x-abl-procedure": "pi-delete-v1",
+"x-abl-route-pattern": "/~*",
+"parameters": [
+{
+"name": "orderID",
+"in": "path",
+"required": true,
+"description": "Número do pedido de venda (nr-pedido).",
+"schema": {
+"type": "integer"
+}
+},
+{
+"name": "sequence",
+"in": "path",
+"required": true,
+"description": "Número da sequência do item.",
+"schema": {
+"type": "integer"
+}
+}
+],
+"responses": {
+"200": {
+"description": "Removido com sucesso"
+},
+"400": {
+"description": "Erro na exclusão",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ErrorList"
+}
+}
+}
+}
+}
+}
+},
+"/orderItemsPublic/cancel/{orderID}/{sequence}": {
+"put": {
+"tags": [
+"orderItemsPublic"
+],
+"summary": "Cancelamento de Item do Pedido",
+"description": "Cancela uma sequência/item do pedido de venda.",
+"operationId": "cancelOrderItemsPublic",
+"x-abl-source": "orderItemsPublic.p",
+"x-abl-procedure": "pi-cancel-v1",
+"x-abl-route-pattern": "/cancel/~*/~*",
+"parameters": [
+{
+"name": "orderID",
+"in": "path",
+"required": true,
+"description": "Número do pedido de venda (nr-pedido).",
+"schema": {
+"type": "integer"
+}
+},
+{
+"name": "sequence",
+"in": "path",
+"required": true,
+"description": "Número da sequência do item.",
+"schema": {
+"type": "integer"
+}
+}
+],
+"requestBody": {
+"required": true,
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/OrderItemCancelationPayload"
+}
+}
+}
+},
+"responses": {
+"200": {
+"description": "Cancelado com sucesso"
+},
+"400": {
+"description": "Erro ao cancelar",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ErrorList"
+}
+}
+}
+}
+}
+}
+},
+"/orderItemsPublic/ecommerce/canceled/byStore/{storeId}": {
+"get": {
+"tags": [
+"orderItemsPublic"
+],
+"summary": "Busca de dados dos itens de pedidos cancelados (E-commerce)",
+"description": "Este serviço permite a visualização dos Itens Cancelados do Pedido de Venda por Loja E-commerce.",
+"operationId": "getOrderItemsCanceledEcommercePublic",
+"x-abl-source": "orderItemsPublic.p",
+"x-abl-procedure": "pi-query-ecommerce-canceled-v1",
+"x-abl-route-pattern": "/ecommerce/canceled/byStore/~*/",
+"parameters": [
+{
+"name": "storeId",
+"in": "path",
+"description": "Identificador da Loja Ecommerce (cod-loja).",
+"required": true,
+"schema": {
+"type": "integer"
+}
+},
+{
+"name": "page",
+"in": "query",
+"required": false,
+"description": "Número da página de resultados.",
+"schema": {
+"type": "integer",
+"default": 1
+}
+},
+{
+"name": "pageSize",
+"in": "query",
+"required": false,
+"description": "Quantidade de registros por página.",
+"schema": {
+"type": "integer",
+"default": 20
+}
+},
+{
+"name": "totalCount",
+"in": "query",
+"required": false,
+"description": "Indica se o total de registros (totalHits) deve ser calculado.",
+"schema": {
+"type": "boolean",
+"default": false
+}
+},
+{
+"name": "lastUpdate",
+"in": "query",
+"required": false,
+"description": "Data/Hora da última sincronização para consulta incremental (filtra por registros alterados após este momento).",
+"schema": {
+"type": "string",
+"format": "date-time",
+"pattern": "ISO-8601"
+}
+},
+{
+"name": "fields",
+"in": "query",
+"required": false,
+"description": "Lista de campos específicos a serem retornados na resposta.",
+"schema": {
+"type": "string"
+}
+},
+{
+"name": "order",
+"in": "query",
+"required": false,
+"description": "Ordenação dos resultados.",
+"schema": {
+"type": "string"
+}
+}
+],
+"responses": {
+"200": {
+"description": "OK",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/OrderItemsCanceledEcommerceResponse"
+}
+}
+}
+},
+"400": {
+"description": "Erro na requisição",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ErrorList"
+}
+}
+}
+},
+"401": {
+"description": "Não autorizado",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ErrorList"
+}
+}
+}
+},
+"500": {
+"description": "Erro interno",
+"content": {
+"application/json": {
+"schema": {
+"$ref": "#/components/schemas/ErrorList"
+}
+}
+}
+}
+}
+}
+}
+},
+"components": {
+"securitySchemes": {
+"basicAuth": {
+"type": "http",
+"scheme": "basic"
+}
+},
+"schemas": {
+"ErrorList": {
+"type": "object",
+"description": "Estrutura padronizada de lista de erros (RowErrors).",
+"properties": {
+"_messages": {
+"type": "array",
+"items": {
+"$ref": "#/components/schemas/ErrorItem"
+}
+}
+}
+},
+"ErrorItem": {
+"type": "object",
+"description": "Detalhes de uma mensagem de erro.",
+"properties": {
+"code": {
+"type": "string",
+"description": "Código numérico do erro ABL.",
+"example": "17006"
+},
+"message": {
+"type": "string",
+"description": "Descrição detalhada do erro.",
+"example": "Estabelecimento não encontrado."
+},
+"detailedMessage": {
+"type": "string",
+"description": "Detalhamento técnico ou causa raiz do erro.",
+"example": "Erro do sistema Progress OpenEdge."
+},
+"type": {
+"type": "string",
+"description": "Subtipo da ocorrência (Ex: ERROR, WARNING, INTERNAL).",
+"example": "ERROR"
+}
+}
+},
+"OrderItemsPublicResponse": {
+"type": "object",
+"description": "Envelope de coleção de itens do pedido.",
+"properties": {
+"total": {
+"type": "integer",
+"description": "Total de registros retornados na página."
+},
+"totalHits": {
+"type": "integer",
+"description": "Total de registros encontrados conforme os filtros enviados."
+},
+"hasNext": {
+"type": "boolean",
+"description": "Indica se existem mais páginas."
+},
+"items": {
+"type": "array",
+"items": {
+"$ref": "#/components/schemas/OrderItemsPublic"
+}
+}
+}
+},
+"OrderItemsListResponse": {
+"type": "object",
+"properties": {
+"orderItems": {
+"type": "array",
+"items": {
+"$ref": "#/components/schemas/OrderItemsPublic"
+}
+}
+}
+},
+"OrderItemsPublicPost": {
+"type": "object",
+"description": "Modelo com os campos aceitos na requisição POST para criação de um item do pedido de venda.",
+"required": [
+"customerOrderId",
+"shortName",
+"itemCode",
+"deliveryDate",
+"quantityRequested",
+"originalPrice"
+],
+"properties": {
+"customerOrderId": {
+"type": "string",
+"title": "movdis.ped-item.nr-pedcli",
+"description": "Número do pedido do cliente.",
+"maxLength": 12,
+"example": "1234567890"
+},
+"shortName": {
+"type": "string",
+"title": "movdis.ped-item.nome-abrev",
+"description": "Nome abreviado do cliente.",
+"maxLength": 12,
+"example": "CLIENTE01"
+},
+"itemCode": {
+"type": "string",
+"title": "movdis.ped-item.it-codigo",
+"description": "Código do item.",
+"maxLength": 16,
+"example": "ITEM001"
+},
+"deliveryDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-entrega",
+"description": "Data de entrega do item do pedido.",
+"example": "2026-11-20"
+},
+"quantityRequested": {
+"type": "number",
+"title": "movdis.ped-item.qt-pedida",
+"description": "Quantidade solicitada do item no pedido.",
+"example": 100
+},
+"sequence": {
+"type": "integer",
+"title": "movdis.ped-item.nr-sequencia",
+"description": "Número de sequência do item no pedido.",
+"example": 10
+},
+"referenceCode": {
+"type": "string",
+"title": "movdis.ped-item.cod-refer",
+"description": "Código de referência do item.",
+"maxLength": 8,
+"example": "REF01"
+},
+"aliquot": {
+"type": "number",
+"title": "movdis.ped-item.aliquota-ipi",
+"description": "Alíquota de IPI.",
+"example": 10
+},
+"deliveryCode": {
+"type": "string",
+"title": "movdis.ped-item.cod-entrega",
+"description": "Código do endereço de entrega.",
+"maxLength": 12,
+"example": "PADRÃO"
+},
+"purchaseOrder": {
+"type": "string",
+"title": "movdis.ped-item.cod-ord-compra",
+"description": "Número da ordem de compra emitida pelo cliente.",
+"maxLength": 15,
+"example": "OC9876"
+},
+"commercialSituation": {
+"type": "integer",
+"title": "movdis.ped-item.cod-sit-com",
+"description": "Código da situação da avaliação comercial"
+},
+"orderItemSituation": {
+"type": "integer",
+"title": "movdis.ped-item.cod-sit-item",
+"description": "Código da situação do item do pedido.",
+"example": 6
+},
+"allocationSituation": {
+"type": "integer",
+"title": "movdis.ped-item.cod-sit-pre",
+"description": "Situação da alocação do estoque"
+},
+"priceSituation": {
+"type": "integer",
+"title": "movdis.ped-item.cod-sit-preco",
+"description": "Código da situação da avaliação de preços"
+},
+"msrUnit": {
+"type": "string",
+"title": "movdis.ped-item.cod-un",
+"description": "Unidade de Medida.",
+"maxLength": 2,
+"example": "CX"
+},
+"unitBusinessCod": {
+"type": "string",
+"title": "movdis.ped-item.cod-unid-negoc",
+"description": "Código da Unidade de Negócio.",
+"maxLength": 3,
+"example": "UN1"
+},
+"discountPercentage": {
+"type": "string",
+"title": "movdis.ped-item.des-pct-desconto-inform",
+"description": "Percentuais de desconto informados por item do pedido.",
+"maxLength": 50,
+"example": "5.00+2.00"
+},
+"unitMeasureBilling": {
+"type": "string",
+"title": "movdis.ped-item.des-un-medida",
+"description": "Unidade de Medida de faturamento.",
+"maxLength": 2,
+"example": "CX"
+},
+"descCancel": {
+"type": "string",
+"title": "movdis.ped-item.desc-cancela",
+"description": "Descrição do motivo do cancelamento.",
+"example": "Desistência do cliente."
+},
+"descDevol": {
+"type": "string",
+"title": "movdis.ped-item.desc-devol",
+"description": "Motivo da devolução"
+},
+"dateCancel": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-canseq",
+"description": "Data de cancelamento da sequência do pedido.",
+"example": "2026-11-01"
+},
+"dateDevol": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-devolucao",
+"description": "Data de devolução do Item."
+},
+"originalDeliveryDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-entorig",
+"description": "Data de entrega solicitada originalmente pelo cliente.",
+"example": "2026-11-20"
+},
+"reactivationDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-reativ",
+"description": "Data de reativação do item."
+},
+"suspensionDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-suspensao",
+"description": "Data de suspensão do item."
+},
+"cancelationItemDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-usercan",
+"description": "Data em que o usuário efetuou o cancelamento.",
+"example": "2026-11-01"
+},
+"devolutionItemDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-userdev",
+"description": "Data em que ocorreu a devolução."
+},
+"suspensionItemDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-usersusp",
+"description": "Data de suspensão"
+},
+"transactionType": {
+"type": "string",
+"title": "movdis.ped-item.nat-operacao",
+"description": "Natureza de operação.",
+"maxLength": 6,
+"example": "5102"
+},
+"priceTable": {
+"type": "string",
+"title": "movdis.ped-item.nr-tabpre",
+"description": "Código da tabela de preços.",
+"maxLength": 8,
+"example": "TAB01"
+},
+"campaignId": {
+"type": "integer",
+"title": "movdis.ped-item.num-id-campanha-crm",
+"description": "Número Id Campanha Crm"
+},
+"comments": {
+"type": "string",
+"title": "movdis.ped-item.observacao",
+"description": "Observações gerais sobre o item.",
+"maxLength": 2000,
+"example": "Entrega prioritária."
+},
+"itemPercentageDiscount": {
+"type": "number",
+"title": "movdis.ped-item.per-des-item",
+"description": "Percentual de desconto sobre o preço unitário.",
+"example": 5
+},
+"quantityAttentive": {
+"type": "number",
+"title": "movdis.ped-item.qt-atendida",
+"description": "Quantidade faturada para o item no pedido."
+},
+"quantityPending": {
+"type": "number",
+"title": "movdis.ped-item.qt-pendente",
+"description": "Quantidade faturada a ser atualizada como atendida."
+},
+"typeAttendance": {
+"type": "integer",
+"title": "movdis.ped-item.tipo-atend",
+"description": "Tipo de atendimento"
+},
+"lastChangeUser": {
+"type": "string",
+"title": "movdis.ped-item.user-alte",
+"description": "Código do último usuário a alterar o item.",
+"example": "admin"
+},
+"cancelationUser": {
+"type": "string",
+"title": "movdis.ped-item.user-canc",
+"description": "Código do usuário que cancelou o item.",
+"example": "admin"
+},
+"devolutionUser": {
+"type": "string",
+"title": "movdis.ped-item.user-devol",
+"description": "Usuário que efetuou a devolução."
+},
+"informedDiscount": {
+"type": "number",
+"title": "movdis.ped-item.val-desconto-inform",
+"description": "Valor do desconto informado."
+},
+"totalValueDiscount": {
+"type": "number",
+"title": "movdis.ped-item.val-desconto-total",
+"description": "Valor do desconto total."
+},
+"periodDiscount": {
+"type": "number",
+"title": "movdis.ped-item.val-pct-desconto-periodo",
+"description": "Percentual de desconto referente ao período controlado."
+},
+"termDiscount": {
+"type": "number",
+"title": "movdis.ped-item.val-pct-desconto-prazo",
+"description": "Percentual de desconto referente ao prazo de pagamento."
+},
+"priceTableDiscount": {
+"type": "number",
+"title": "movdis.ped-item.val-pct-desconto-tab-preco",
+"description": "Percentual de descontos em quantidade da tabela de preços."
+},
+"totalPercentageDiscount": {
+"type": "number",
+"title": "movdis.ped-item.val-pct-desconto-total",
+"description": "Percentual de desconto total do item do pedido."
+},
+"insurancePrice": {
+"type": "number",
+"title": "movdis.ped-item.val-seguro",
+"description": "Valor do seguro."
+},
+"discountPrice": {
+"type": "number",
+"title": "movdis.ped-item.vl-desconto",
+"description": "Valor do desconto."
+},
+"openAmount": {
+"type": "number",
+"title": "movdis.ped-item.vl-liq-abe",
+"description": "Valor total em aberto do item de pedido."
+},
+"liquidMerchandise": {
+"type": "number",
+"title": "movdis.ped-item.vl-liq-it",
+"description": "Valor líquido da mercadoria."
+},
+"openLiquidMerchandise": {
+"type": "number",
+"title": "movdis.ped-item.vl-merc-abe",
+"description": "Valor líquido da mercadoria em aberto"
+},
+"originalPrice": {
+"type": "number",
+"title": "movdis.ped-item.vl-preori",
+"description": "Preço original do item.",
+"example": 30
+},
+"originalPriceBilling": {
+"type": "number",
+"title": "movdis.ped-item.vl-preori-un-fat",
+"description": "Preço Original na Unidade de Medida de Faturamento"
+},
+"priceTableValue": {
+"type": "number",
+"title": "movdis.ped-item.vl-pretab",
+"description": "Preço cadastrado na tabela de preços.",
+"example": 30
+},
+"priceUnitary": {
+"type": "number",
+"title": "movdis.ped-item.vl-preuni",
+"description": "Preço unitário líquido.",
+"example": 25.5
+},
+"totalOrderItemAmount": {
+"type": "number",
+"title": "movdis.ped-item.vl-tot-it",
+"description": "Valor total do item de pedido."
+},
+"donation": {
+"type": "boolean",
+"title": "movdis.ped-item.char-2,113,1",
+"description": "Indica se o item é doação.",
+"example": false
+},
+"quantityBilling": {
+"type": "number",
+"title": "movdis.ped-item.qt-un-fat",
+"description": "Quantidade na UM utilizada para Faturamento do Item.",
+"example": 100
+}
+}
+},
+"OrderItemsPublic": {
+"type": "object",
+"description": "Estrutura completa do item do pedido de venda.",
+"properties": {
+"aliquot": {
+"type": "number",
+"title": "movdis.ped-item.aliquota-ipi",
+"description": "Alíquota de IPI.",
+"example": 10
+},
+"deliveryCode": {
+"type": "string",
+"title": "movdis.ped-item.cod-entrega",
+"description": "Código do endereço de entrega.",
+"maxLength": 12,
+"example": "PADRÃO"
+},
+"purchaseOrder": {
+"type": "string",
+"title": "movdis.ped-item.cod-ord-compra",
+"description": "Número da ordem de compra emitida pelo cliente.",
+"maxLength": 15,
+"example": "OC9876"
+},
+"referenceCode": {
+"type": "string",
+"title": "movdis.ped-item.cod-refer",
+"description": "Código de referência do item.",
+"maxLength": 8,
+"example": "REF01"
+},
+"commercialSituation": {
+"type": "integer",
+"title": "movdis.ped-item.cod-sit-com",
+"description": "Código da situação da avaliação comercial"
+},
+"orderItemSituation": {
+"type": "integer",
+"title": "movdis.ped-item.cod-sit-item",
+"description": "Código da situação do item do pedido.",
+"example": 6
+},
+"allocationSituation": {
+"type": "integer",
+"title": "movdis.ped-item.cod-sit-pre",
+"description": "Situação da alocação do estoque"
+},
+"priceSituation": {
+"type": "integer",
+"title": "movdis.ped-item.cod-sit-preco",
+"description": "Código da situação da avaliação de preços"
+},
+"msrUnit": {
+"type": "string",
+"title": "movdis.ped-item.cod-un",
+"description": "Unidade de Medida.",
+"maxLength": 2,
+"example": "CX"
+},
+"unitBusinessCod": {
+"type": "string",
+"title": "movdis.ped-item.cod-unid-negoc",
+"description": "Código da Unidade de Negócio.",
+"maxLength": 3,
+"example": "UN1"
+},
+"discountPercentage": {
+"type": "string",
+"title": "movdis.ped-item.des-pct-desconto-inform",
+"description": "Percentuais de desconto informados por item do pedido.",
+"maxLength": 50,
+"example": "5.00+2.00"
+},
+"unitMeasureBilling": {
+"type": "string",
+"title": "movdis.ped-item.des-un-medida",
+"description": "Unidade de Medida de faturamento.",
+"maxLength": 2,
+"example": "CX"
+},
+"unitMeasureStock": {
+"type": "string",
+"title": "movdis.ped-item.char-2,09,02",
+"description": "Unidade de Medida de estoque"
+},
+"descCancel": {
+"type": "string",
+"title": "movdis.ped-item.desc-cancela",
+"description": "Descrição do motivo do cancelamento.",
+"example": "Desistência do cliente."
+},
+"descDevol": {
+"type": "string",
+"title": "movdis.ped-item.desc-devol",
+"description": "Motivo da devolução"
+},
+"dateCancel": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-canseq",
+"description": "Data de cancelamento da sequência do pedido.",
+"example": "2026-11-01"
+},
+"dateDevol": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-devolucao",
+"description": "Data de devolução do Item."
+},
+"originalDeliveryDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-entorig",
+"description": "Data de entrega solicitada originalmente pelo cliente.",
+"example": "2026-11-20"
+},
+"deliveryDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-entrega",
+"description": "Data de entrega do item do pedido.",
+"example": "2026-11-20"
+},
+"reactivationDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-reativ",
+"description": "Data de reativação do item."
+},
+"suspensionDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-suspensao",
+"description": "Data de suspensão do item."
+},
+"cancelationItemDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-usercan",
+"description": "Data em que o usuário efetuou o cancelamento.",
+"example": "2026-11-01"
+},
+"devolutionItemDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-userdev",
+"description": "Data em que ocorreu a devolução."
+},
+"suspensionItemDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-usersusp",
+"description": "Data de suspensão"
+},
+"itemCode": {
+"type": "string",
+"title": "movdis.ped-item.it-codigo",
+"description": "Código do item.",
+"maxLength": 16,
+"example": "ITEM001"
+},
+"transactionType": {
+"type": "string",
+"title": "movdis.ped-item.nat-operacao",
+"description": "Natureza de operação.",
+"maxLength": 6,
+"example": "5102"
+},
+"shortName": {
+"type": "string",
+"title": "movdis.ped-item.nome-abrev",
+"description": "Nome abreviado do cliente.",
+"maxLength": 12,
+"example": "CLIENTE01"
+},
+"customerOrderId": {
+"type": "string",
+"title": "movdis.ped-item.nr-pedcli",
+"description": "Número do pedido do cliente.",
+"maxLength": 12,
+"example": "1234567890"
+},
+"orderId": {
+"type": "integer",
+"title": "movdis.ped-venda.nr-pedido",
+"description": "Número do pedido no ERP."
+},
+"sequence": {
+"type": "integer",
+"title": "movdis.ped-item.nr-sequencia",
+"description": "Número de sequência do item no pedido.",
+"example": 10
+},
+"priceTable": {
+"type": "string",
+"title": "movdis.ped-item.nr-tabpre",
+"description": "Código da tabela de preços.",
+"maxLength": 8,
+"example": "TAB01"
+},
+"campaignId": {
+"type": "integer",
+"title": "movdis.ped-item.num-id-campanha-crm",
+"description": "Número Id Campanha Crm"
+},
+"comments": {
+"type": "string",
+"title": "movdis.ped-item.observacao",
+"description": "Observações gerais sobre o item.",
+"maxLength": 2000,
+"example": "Entrega prioritária."
+},
+"itemPercentageDiscount": {
+"type": "number",
+"title": "movdis.ped-item.per-des-item",
+"description": "Percentual de desconto sobre o preço unitário.",
+"example": 5
+},
+"quantityAttentive": {
+"type": "number",
+"title": "movdis.ped-item.qt-atendida",
+"description": "Quantidade faturada para o item no pedido"
+},
+"quantityRequested": {
+"type": "number",
+"title": "movdis.ped-item.qt-pedida",
+"description": "Quantidade solicitada do item no pedido.",
+"example": 100
+},
+"quantityPending": {
+"type": "number",
+"title": "movdis.ped-item.qt-pendente",
+"description": "Quantidade faturada a ser atualizada como atendida"
+},
+"quantityBilling": {
+"type": "number",
+"title": "movdis.ped-item.qt-un-fat",
+"description": "Quantidade na UM utilizada para Faturamento do Item.",
+"example": 100
+},
+"typeAttendance": {
+"type": "integer",
+"title": "movdis.ped-item.tipo-atend",
+"description": "Tipo de atendimento"
+},
+"lastChangeUser": {
+"type": "string",
+"title": "movdis.ped-item.user-alte",
+"description": "Código do último usuário a alterar o item.",
+"example": "admin"
+},
+"cancelationUser": {
+"type": "string",
+"title": "movdis.ped-item.user-canc",
+"description": "Código do usuário que cancelou o item.",
+"example": "admin"
+},
+"devolutionUser": {
+"type": "string",
+"title": "movdis.ped-item.user-devol",
+"description": "Usuário que efetuou a devolução."
+},
+"informedDiscount": {
+"type": "number",
+"title": "movdis.ped-item.val-desconto-inform",
+"description": "Valor do desconto informado."
+},
+"totalValueDiscount": {
+"type": "number",
+"title": "movdis.ped-item.val-desconto-total",
+"description": "Valor do desconto total."
+},
+"periodDiscount": {
+"type": "number",
+"title": "movdis.ped-item.val-pct-desconto-periodo",
+"description": "Percentual de desconto referente ao período controlado."
+},
+"termDiscount": {
+"type": "number",
+"title": "movdis.ped-item.val-pct-desconto-prazo",
+"description": "Percentual de desconto referente ao prazo de pagamento."
+},
+"priceTableDiscount": {
+"type": "number",
+"title": "movdis.ped-item.val-pct-desconto-tab-preco",
+"description": "Percentual de descontos em quantidade da tabela de preços."
+},
+"totalPercentageDiscount": {
+"type": "number",
+"title": "movdis.ped-item.val-pct-desconto-total",
+"description": "Percentual de desconto total do item do pedido."
+},
+"insurancePrice": {
+"type": "number",
+"title": "movdis.ped-item.val-seguro",
+"description": "Valor do seguro."
+},
+"discountPrice": {
+"type": "number",
+"title": "movdis.ped-item.vl-desconto",
+"description": "Valor do desconto."
+},
+"openAmount": {
+"type": "number",
+"title": "movdis.ped-item.vl-liq-abe",
+"description": "Valor total em aberto do item de pedido."
+},
+"liquidMerchandise": {
+"type": "number",
+"title": "movdis.ped-item.vl-liq-it",
+"description": "Valor líquido da mercadoria."
+},
+"openLiquidMerchandise": {
+"type": "number",
+"title": "movdis.ped-item.vl-merc-abe",
+"description": "Valor líquido da mercadoria em aberto"
+},
+"originalPrice": {
+"type": "number",
+"title": "movdis.ped-item.vl-preori",
+"description": "Preço original do item.",
+"example": 30
+},
+"originalPriceBilling": {
+"type": "number",
+"title": "movdis.ped-item.vl-preori-un-fat",
+"description": "Preço Original na Unidade de Medida de Faturamento"
+},
+"priceTableValue": {
+"type": "number",
+"title": "movdis.ped-item.vl-pretab",
+"description": "Preço cadastrado na tabela de preços.",
+"example": 30
+},
+"priceUnitary": {
+"type": "number",
+"title": "movdis.ped-item.vl-preuni",
+"description": "Preço unitário líquido.",
+"example": 25.5
+},
+"totalOrderItemAmount": {
+"type": "number",
+"title": "movdis.ped-item.vl-tot-it",
+"description": "Valor total do item de pedido."
+},
+"donation": {
+"type": "boolean",
+"title": "movdis.ped-item.char-2,113,1",
+"description": "Indica se o item é doação.",
+"example": false
+},
+"itemDescription": {
+"type": "string",
+"title": "mgind.item.desc-item",
+"description": "Descrição do Item."
+},
+"unitMeasureBillingDesc": {
+"type": "string",
+"title": "mgind.tab-unidade.descricao",
+"description": "Unidade de Medida de Faturamento."
+},
+"unitMeasureStockDesc": {
+"type": "string",
+"title": "mgind.tab-unidade.descricao",
+"description": "Descrição Unidade de Medida de estoque"
+},
+"ipiValue": {
+"type": "number",
+"title": "movdis.ped-item.val-ipi",
+"description": "Valor IPI"
+}
+}
+},
+"OrderItemCancelationPayload": {
+"type": "object",
+"description": "Estrutura dos dados de itens cancelados do pedido e-commerce.",
+"required": [
+"typeReason"
+],
+"properties": {
+"cancellationDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-usercan",
+"description": "Data do cancelamento do item.",
+"example": "2026-11-01",
+"default": "2026-11-01"
+},
+"typeReason": {
+"type": "integer",
+"title": "mgdis.motivo.cod-motivo",
+"description": "Motivo do cancelamento conforme CD4010."
+},
+"cancellationReason": {
+"type": "string",
+"title": "movdis.ped-item.desc-cancela",
+"description": "Motivo do cancelamento."
+}
+}
+},
+"OrderItemsCanceledEcommerceResponse": {
+"type": "object",
+"description": "Resposta da requisição que retorna os itens cancelados de pedidos de venda e-commerce.",
+"properties": {
+"total": {
+"type": "integer",
+"description": "Total de registros retornados na página."
+},
+"totalHits": {
+"type": "integer",
+"description": "Total de registros encontrados conforme os filtros enviados."
+},
+"hasNext": {
+"type": "boolean",
+"description": "Indica se existem mais páginas."
+},
+"items": {
+"type": "array",
+"description": "Lista de itens cancelados do pedido de venda.",
+"items": {
+"$ref": "#/components/schemas/OrderItemsCanceledEcommerce"
+}
+}
+}
+},
+"OrderItemsCanceledEcommerce": {
+"type": "object",
+"description": "Estrutura dos dados de itens cancelados do pedido e-commerce.",
+"properties": {
+"cancelationUser": {
+"type": "string",
+"title": "movdis.ped-item.user-canc",
+"description": "Código do usuário que cancelou o item.",
+"example": "admin"
+},
+"cancelationItemDate": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-usercan",
+"description": "Data em que o usuário efetuou o cancelamento.",
+"example": "2026-11-01"
+},
+"descCancel": {
+"type": "string",
+"title": "movdis.ped-item.desc-cancela",
+"description": "Descrição do motivo do cancelamento.",
+"example": "Desistência do cliente via E-commerce."
+},
+"dateCancel": {
+"type": "string",
+"format": "date",
+"title": "movdis.ped-item.dt-canseq",
+"description": "Data de cancelamento da sequência do pedido.",
+"example": "2026-11-01"
+},
+"orderItemSituation": {
+"type": "integer",
+"title": "movdis.ped-item.cod-sit-item",
+"description": "Código da situação do item do pedido.",
+"example": 6
+},
+"shortName": {
+"type": "string",
+"title": "movdis.ped-item.nome-abrev",
+"description": "Nome abreviado do cliente.",
+"maxLength": 12,
+"example": "CLIENTE01"
+},
+"customerOrderId": {
+"type": "string",
+"title": "movdis.ped-item.nr-pedcli",
+"description": "Número do pedido do cliente.",
+"maxLength": 12,
+"example": "1234567890"
+},
+"sequence": {
+"type": "integer",
+"title": "movdis.ped-item.nr-sequencia",
+"description": "Número de sequência do item no pedido.",
+"example": 10
+},
+"priceTable": {
+"type": "string",
+"title": "movdis.ped-item.nr-tabpre",
+"description": "Código da tabela de preços.",
+"maxLength": 8,
+"example": "TAB01"
+},
+"itemCode": {
+"type": "string",
+"title": "movdis.ped-item.it-codigo",
+"description": "Código do item.",
+"maxLength": 16,
+"example": "ITEM001"
+},
+"comments": {
+"type": "string",
+"title": "movdis.ped-item.observacao",
+"description": "Observações gerais sobre o item.",
+"maxLength": 2000,
+"example": "Item cancelado."
+},
+"lastChangeUser": {
+"type": "string",
+"title": "movdis.ped-item.user-alte",
+"description": "Código do último usuário a alterar o item.",
+"example": "admin"
+}
+}
+}
+}
+},
+"x-scope": {
+"module": "PDP",
+"sourceWrapper": "pdp/api/v1/orderItemsPublic.p",
+"sourceHandler": "pdp/apiOrderItemsPublic.p",
+"visibility": "external",
+"authenticationDeployment": "A autenticação e a exposição externa dependem da configuração do ambiente Datasul publicado."
+}
 }
